@@ -205,7 +205,7 @@ this.onEnterFrame = function()
 	}
 	//animationsname definieren 
 	anim = action + dir + weapon;
-
+	trace(anim)
 	animations.gotoAndStop(anim);
 
 	this.swapDepths(int(this._y));
