@@ -1,5 +1,1 @@
-﻿this.onEnterFrame = function() {
-	
- this.swapDepths(int(this._y));
-
-}
+﻿this.swapDepths(int(this._y));
