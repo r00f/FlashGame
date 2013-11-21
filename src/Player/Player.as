@@ -5,7 +5,7 @@ action = "";
 var HP = 100;
 
 //wall sichtbar/nicht sichtbar
-_parent.wall._visible = 1;
+_parent.wall._visible = 0;
 
 // Normgeschwindigkeit
 speed = 4;
