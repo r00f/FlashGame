@@ -3,6 +3,9 @@ weapon = "";
 dir = "right_";
 action = "";
 var HP = 100;
+var mana = 100;
+vNokugel = 0;
+vTimerkugel = 0;
 
 //wall sichtbar/nicht sichtbar
 _parent.wall._visible = 0;
@@ -20,7 +23,7 @@ this.onEnterFrame = function()
 	xspeed = 0;
 	yspeed = 0;
 	
-	
+
 	// Dann diese Geschwindigkeiten anhand von Tastenbefehlen neu setzen
 	if (_root.key_left == 1)
 	{
@@ -43,6 +46,7 @@ this.onEnterFrame = function()
 		yspeed = speed;
 		dir = "down_";
 	}
+	
 
 	if (_root.key_left == 0)
 	{
@@ -60,6 +64,58 @@ this.onEnterFrame = function()
 	{
 		idle = 1;
 	}
+	
+	
+	if (_root.key_strg) {
+		
+		if ((vTimerkugel == 0) and (mana > 0)) {
+			duplicateMovieClip(_root.world.kugel, "kugel"+vNokugel, vNokugel);
+			_root.world["kugel"+vNokugel]._x = _root.world.player._x;
+			_root.world["kugel"+vNokugel]._y = (_root.world.player._y)-25;
+			vNokugel += 1;
+			mana -= 20;
+			
+			duplicateMovieClip(_root.world.darkness.torch_light, "torch_light"+_root.vNolight, _root.vNolight);
+			_root.vNolight += 1;
+			_root.world.darkness["torch_light"+_root.vNolight]._x = _root.world["kugel"+vNokugel]._x;
+			_root.world.darkness["torch_light"+_root.vNolight]._y = _root.world["kugel"+vNokugel]._y;
+
+			//action = "cast_"
+			
+			
+			// den Kugelspeed auf plus- oder minuswert setzen
+			
+			
+			if (dir == "right_") {
+				_root.xKugelspeed = 10;
+				_root.yKugelspeed = 0;
+			} 
+			
+			if (dir == "left_") {
+				_root.xKugelspeed = -10;
+				_root.yKugelspeed = 0;
+			}
+			
+			if (dir == "up_") {
+				_root.yKugelspeed = -10;
+				_root.xKugelspeed = 0;
+			} 
+			
+			if (dir == "down_") {
+				_root.yKugelspeed = 10;
+				_root.xKugelspeed = 0;
+			}
+		}
+		// nur alle 10 frames abschuss der Kugel möglich
+		vTimerkugel++;
+		if (vTimerkugel == 10) {
+			vTimerkugel = 0;
+		}
+	} /*else {
+			vTimerkugel = 0;
+	}*/
+	
+	
 	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken: 
 	x_now = int(this._x);
 	y_now = int(this._y);
@@ -177,8 +233,10 @@ this.onEnterFrame = function()
 	//trace(x_next);
 	//trace(y_next);
 	//trace(HP);
+	//trace(mana);
 	//trace(_root.key_space);
-	
+	//trace(dir);
+	trace(_root.vNolight);
 	if (_root.key_space == 1)
 	{
 		action = "hit_";
@@ -203,6 +261,7 @@ this.onEnterFrame = function()
 	{
 		weapon = "sword";
 	}
+
 	//animationsname definieren 
 	anim = action + dir + weapon;
 	animations.gotoAndStop(anim);
@@ -266,5 +325,68 @@ this.onEnterFrame = function()
 	{
 		_root.interf.HP_bar.gotoAndStop("null");
 	}
+	
+	//mana-Balken
+	if (mana == 100)
+	{
+		_root.interf.mana_bar.gotoAndStop("hundert");
+	}
 
+	else if (mana >= 90)
+	{
+		_root.interf.mana_bar.gotoAndStop("neun");
+	}
+
+	else if (mana >= 80)
+	{
+		_root.interf.mana_bar.gotoAndStop("acht");
+	}
+
+	else if (mana >= 70)
+	{
+		_root.interf.mana_bar.gotoAndStop("sieben");
+	}
+
+	else if (mana >= 60)
+	{
+		_root.interf.mana_bar.gotoAndStop("sechs");
+	}
+
+	else if (mana >= 50)
+	{
+		_root.interf.mana_bar.gotoAndStop("fuenf");
+	}
+
+	else if (mana >= 40)
+	{
+		_root.interf.mana_bar.gotoAndStop("vier");
+	}
+
+	else if (mana >= 30)
+	{
+		_root.interf.mana_bar.gotoAndStop("drei");
+	}
+
+	else if (mana >= 20)
+	{
+		_root.interf.mana_bar.gotoAndStop("zwei");
+	}
+
+	else if (mana >= 10)
+	{
+		_root.interf.mana_bar.gotoAndStop("eins");
+	}
+
+	else if (mana >= 0)
+	{
+		_root.interf.mana_bar.gotoAndStop("null");
+	}
+	
+	//mana-regeneration
+	
+	if (mana < 100)
+	{
+		mana += .5;
+	}
+	
 };
