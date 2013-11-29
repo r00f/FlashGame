@@ -1,26 +1,28 @@
-﻿sword = true
-weapon = "";
-dir = "right_";
-action = "";
+﻿var sword = true
+var weapon = "";
+var dir = "right_";
+var action = "";
 var HP = 100;
 var mana = 100;
-vTimerkugel = 0;
+var vTimerkugel = 0;
+var manaBar = _root.interf.mana_bar
+var healthBar = _root.interf.HP_bar
 
 //wall sichtbar/nicht sichtbar
 _parent.wall._visible = 0;
 
 // Normgeschwindigkeit
-speed = 4;
+var speed = 4;
 // Kamerapositionswerte deklarieren
-cam_x = int(_parent._x);
-cam_y = int(_parent._y);
+var cam_x = int(_parent._x);
+var cam_y = int(_parent._y);
 // In jedem Bild wiederkehrend ausgeführter Scriptteil:
 this.onEnterFrame = function()
 {
 
 	// Nun die x- und y-Geschwindigkeiten der Spielfigur zurücksetzen
-	xspeed = 0;
-	yspeed = 0;
+	var xspeed = 0;
+	var yspeed = 0;
 	
 
 	// Dann diese Geschwindigkeiten anhand von Tastenbefehlen neu setzen
@@ -100,19 +102,18 @@ this.onEnterFrame = function()
 				_root.xKugelspeed = 0;
 			}
 		}
-		// nur alle 10 frames abschuss der Kugel möglich
-		vTimerkugel++;
-		if (vTimerkugel == 6) {
-			vTimerkugel = 0;
-		}
-	} /*else {
-			vTimerkugel = 0;
-	}*/
-	
+		
+
+	}
+	// nur alle 10 frames abschuss der Kugel möglich
+	vTimerkugel++;
+	if (vTimerkugel == 10) {
+		vTimerkugel = 0;
+	}
 	
 	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken: 
-	x_now = int(this._x);
-	y_now = int(this._y);
+	var x_now = int(this._x);
+	var y_now = int(this._y);
 	// ---- Kollision in x-Richtung ----
 	// Da die hitTest-Funktion stets im Koordinatensystem der Hauptzeitleiste (Bühne) arbeitet,
 	// muss das Koordinatensystem der Spielwelt vorübergehend deckungsgleich mit dem der Bühne 
@@ -274,122 +275,39 @@ this.onEnterFrame = function()
 	moreaction = "";
 
 	//HP-Balken
-	if (HP == 100)
-	{
-		_root.interf.HP_bar.gotoAndStop("hundert");
-	}
-
-	else if (HP >= 90)
-	{
-		_root.interf.HP_bar.gotoAndStop("neun");
-	}
-
-	else if (HP >= 80)
-	{
-		_root.interf.HP_bar.gotoAndStop("acht");
-	}
-
-	else if (HP >= 70)
-	{
-		_root.interf.HP_bar.gotoAndStop("sieben");
-	}
-
-	else if (HP >= 60)
-	{
-		_root.interf.HP_bar.gotoAndStop("sechs");
-	}
-
-	else if (HP >= 50)
-	{
-		_root.interf.HP_bar.gotoAndStop("fuenf");
-	}
-
-	else if (HP >= 40)
-	{
-		_root.interf.HP_bar.gotoAndStop("vier");
-	}
-
-	else if (HP >= 30)
-	{
-		_root.interf.HP_bar.gotoAndStop("drei");
-	}
-
-	else if (HP >= 20)
-	{
-		_root.interf.HP_bar.gotoAndStop("zwei");
-	}
-
-	else if (HP >= 10)
-	{
-		_root.interf.HP_bar.gotoAndStop("eins");
-	}
-
-	else if (HP >= 0)
-	{
-		_root.interf.HP_bar.gotoAndStop("null");
-	}
-	
+	updateResourceBar(healthBar, HP, 0);
 	//mana-Balken
-	if (mana == 100)
-	{
-		_root.interf.mana_bar.gotoAndStop("hundert");
-	}
-
-	else if (mana >= 90)
-	{
-		_root.interf.mana_bar.gotoAndStop("neun");
-	}
-
-	else if (mana >= 80)
-	{
-		_root.interf.mana_bar.gotoAndStop("acht");
-	}
-
-	else if (mana >= 70)
-	{
-		_root.interf.mana_bar.gotoAndStop("sieben");
-	}
-
-	else if (mana >= 60)
-	{
-		_root.interf.mana_bar.gotoAndStop("sechs");
-	}
-
-	else if (mana >= 50)
-	{
-		_root.interf.mana_bar.gotoAndStop("fuenf");
-	}
-
-	else if (mana >= 40)
-	{
-		_root.interf.mana_bar.gotoAndStop("vier");
-	}
-
-	else if (mana >= 30)
-	{
-		_root.interf.mana_bar.gotoAndStop("drei");
-	}
-
-	else if (mana >= 20)
-	{
-		_root.interf.mana_bar.gotoAndStop("zwei");
-	}
-
-	else if (mana >= 10)
-	{
-		_root.interf.mana_bar.gotoAndStop("eins");
-	}
-
-	else if (mana >= 0)
-	{
-		_root.interf.mana_bar.gotoAndStop("null");
-	}
+	updateResourceBar(manaBar, mana, 0.5);
 	
-	//mana-regeneration
-	
-	if (mana < 100)
-	{
-		mana += .5;
-	}
 	
 };
+
+
+function updateResourceBar(theBar:MovieClip, currentValue:Number, regen:Number) {
+	if (currentValue== 100) {
+		theBar.gotoAndStop("hundert");
+	} else if (currentValue>= 90) {
+		theBar.gotoAndStop("neun");
+	} else if (currentValue>= 80) {
+		theBar.gotoAndStop("acht");
+	} else if (currentValue>= 70) {
+		theBar.gotoAndStop("sieben");
+	} else if (currentValue>= 60) {
+		theBar.gotoAndStop("sechs");
+	} else if (currentValue>= 50) {
+		theBar.gotoAndStop("fuenf");
+	} else if (currentValue>= 40) {
+		theBar.gotoAndStop("vier");
+	} else if (currentValue>= 30) {
+		theBar.gotoAndStop("drei");
+	} else if (currentValue>= 20) {
+		theBar.gotoAndStop("zwei");
+	} else if (currentValue>= 10) {
+		theBar.gotoAndStop("eins");
+	} else if (currentValue>= 0) {
+		theBar.gotoAndStop("null");
+	}
+	if (currentValue < 100)  {
+		currentValue += regen;
+	}
+}
