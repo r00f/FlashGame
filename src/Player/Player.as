@@ -58,13 +58,11 @@ this.onEnterFrame = function()
 
 	
 	if (_root.key_strg) {
-		if ((vTimerkugel == 0) and (vManaPoints > 0)) {
+		if ((vTimerkugel == 0) and (vManaPoints >= 20)) {
 
 			var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b++;
-			trace(_root.world.kugel);
 			duplicateMovieClip(_root.world.kugel, "kugel"+nextKugelNumber, nextKugelNumber);
 			var currentKugel:MovieClip = _root.world["kugel"+nextKugelNumber]
-			trace("creating fireball: "+currentKugel);
 			vManaPoints -= 20;
 			
 			

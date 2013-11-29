@@ -20,7 +20,6 @@ var vTimer = 0;
 /* "public" functions   */
 
 /* SETUP */
-trace("fireball created");
 this.setupDirection(FireballSpeed)
 
 this._x = this.vPlayer.getXPosition() + FireballXOffset;
@@ -44,9 +43,6 @@ function hittest() {
 
 this.onEnterFrame = function()
 {
-	//trace("Fireball: " + this.vKugelSpeedX);
-	trace("Fireball");
-	trace("Light of Firebal: " + vLight);
 	if (!vLight) {
 		duplicateMovieClip(vOriginalFireballLight, vFireballLightName, vNumber);
 		vLight = _root.world.darkness[vFireballLightName];
@@ -79,28 +75,5 @@ this.onEnterFrame = function()
 	vTimer += 1;
 	if (vTimer == 50) {
 		this.removeMovieClip();
-	}
-}
-
-function setupDirection(speed:Number) {
-	var playerDirection = this.vPlayer.getDirection();
-	if (playerDirection == Directions.right) {
-		this.vKugelSpeedX = speed;
-		this.vKugelSpeedY = 0;
-	} 
-
-	if (playerDirection == Directions.left) {
-		this.vKugelSpeedX = -speed;
-		this.vKugelSpeedY = 0;
-	}
-
-	if (playerDirection == Directions.up) {
-		this.vKugelSpeedX = 0;
-		this.vKugelSpeedY = -speed;
-	} 
-
-	if (playerDirection == Directions.down) {
-		this.vKugelSpeedX = 0;
-		this.vKugelSpeedY = speed;
 	}
 }
