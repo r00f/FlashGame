@@ -56,7 +56,9 @@ this.onEnterFrame = function()
 	
 	if (hittest()) {
 		vLight.removeMovieClip()
-		gotoAndStop("explode"); 
+		gotoAndStop("explode");
+		xKugelspeed = 0;
+		yKugelspeed = 0;
 	}	
 	
 	this._x += xKugelspeed;
