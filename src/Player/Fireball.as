@@ -1,34 +1,33 @@
 ﻿#include "src/Utilities/Constants.as"
+#include "src/Utilities/Utilities.as"
 stop();
 
-//_root.vNospelllight += 1;
-vLight = "";
-xKugelspeed = _root.xKugelspeed;
-yKugelspeed = _root.yKugelspeed;
-vTimer = 0;
-vNumber = _root.vNokugel
-player = _root.world.player;
-//vLightNumber = _root.vNospelllight;
 
-if (player.getDirection() == Directions.right)
-{
-	gotoAndStop(Directions.right);
-}
+/*  "private" variables   */
+var vPlayer:MovieClip = _root.world.player;
+var vKugelSpeedX:Number = 0;
+var vKugelSpeedY:Number = 0;
 
-if (player.getDirection() == Directions.left)
-{
-	gotoAndStop(Directions.left);
-}
+var vOriginalFireballLight:MovieClip = _root.world.darkness.fireball_light;
+var vNumber = _root.vNokugel;
+var vFireballLightName:String = "fireball_vLight" + vNumber;
 
-if (player.getDirection() == Directions.up)
-{
-	gotoAndStop(Directions.up);
+var vLight;
+var vTimer = 0;
 
-}
-if (player.getDirection() == Directions.down)
-{
-	gotoAndStop(Directions.down);
-}
+/* "public" functions   */
+
+/* SETUP */
+
+this.setupDirection(FireballSpeed)
+
+this._x = this.vPlayer.getXPosition() + FireballXOffset;
+this._y = this.vPlayer.getYPosition() + FireballYOffset;
+
+// Set Direction to the same the player is facing
+gotoAndStop(this.vPlayer.getDirection());
+
+
 
 function hittest() {
 	for (var i = 0; i < _root.vWalls.length; i++) {
@@ -42,24 +41,23 @@ function hittest() {
 
 this.onEnterFrame = function()
 {
-	if (vLight == "") {
-		duplicateMovieClip(_root.world.darkness.fireball_light, "fireball_light"+vNumber, vNumber);
-		vLight = _root.world.darkness["fireball_light"+vNumber];
-		vLight._x =   player._x;
-		vLight._y =  (player._y)-25;
+	//trace("Fireball: " + this.vKugelSpeedX);
+	if (!vLight) {
+		duplicateMovieClip(vOriginalFireballLight, vFireballLightName, vNumber);
+		vLight = _root.world.darkness[vFireballLightName];
 	}
 	
 	if (hittest()) {
 		//vLight.removeMovieClip()
 		gotoAndStop("explode");
-		vLight.gotoAndPlay("explode");
-		//_root.world.darkness.fireball_light.gotoAndPlay("explode");
-		xKugelspeed = 0;
-		yKugelspeed = 0;
+		vLight.explode();
+		vLight.gotoAndStop("explode");
+		this.vKugelSpeedX = 0;
+		this.vKugelSpeedY = 0;
 	}	
 	
-	this._x += xKugelspeed;
-	this._y += yKugelspeed;
+	this._x += this.vKugelSpeedX;
+	this._y += this.vKugelSpeedY;
 	
 	for (i=1; i<=10; i++) {
 		if (this.hitTest(_parent["gegner"+i])) {

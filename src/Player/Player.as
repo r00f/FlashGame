@@ -1,14 +1,38 @@
 ﻿#include "src/Utilities/Constants.as"
-var sword = true
-var weapon = "";
-var currentDirection = "right";
-var action = "";
-var HP = 100;
-var mana = 100;
-var vTimerkugel = 0;
-var manaBar = _root.interf.mana_bar
-var healthBar = _root.interf.HP_bar
+#include "src/Utilities/Utilities.as"
 
+// "private" variables
+var vSword:Boolean = true
+var vWeapon:String = "";
+var vCurrentDirection:String =Directions.right;
+var vAction:String = "";
+var vHP:Number = 100;
+var vManaPoints:Number = 100;
+var vTimerkugel = 0;
+var vManaBar:MovieClip = _root.interf.mana_bar
+var vHealthBar:MovieClip = _root.interf.HP_bar
+
+var kugelSpeed = {x: 0, y: 0}
+
+
+// "public" functions
+
+function getDirection() {
+	// Funktion damit die interne Implementation von der Richtung unabhängig von den anderen ist.
+	return vCurrentDirection;
+}
+
+function getXPosition() {
+	return this._x;
+}
+
+function getYPosition() {
+	return this._y;
+}
+
+function getHealthPoints() {
+	return vHP;
+}
 
 //wall sichtbar/nicht sichtbar
 _parent.wall._visible = 0;
@@ -19,10 +43,6 @@ var speed = 4;
 var cam_x = int(_parent._x);
 var cam_y = int(_parent._y);
 
-// Funktion damit die interne Implementation von der Richtung unabhängig von den anderen ist.
-var getDirection = function () {
-	return currentDirection;
-}
 
 
 // In jedem Bild wiederkehrend ausgeführter Scriptteil:
@@ -32,73 +52,23 @@ this.onEnterFrame = function()
 	var xspeed = 0;
 	var yspeed = 0;
 
-	var newSpeed = {
-		x: 0,
-		y: 0
-	};
-
-
-	function adjustNewSpeedForDirection(direction, speed_change) {
-		if (_root["key_"+direction] == 1) {
-			 // _root["key_left"] ist das Gleiche wie _root.key_left
-			currentDirection = direction;
-			if (speed_change.x) {
-				// Die Funktion ist innerhalb von this.onEnterFrame und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
-				newSpeed.x = speed_change.x;
-			}
-			if (speed_change.y) {
-				newSpeed.y = speed_change.y;
-			}
-		} else {
-			idle = 1;
-		}
-	}
-	
-	// Mapping von richtung zu geschwindigkeit (left => x = -speed, usw)
-	adjustNewSpeedForDirection(Directions.left,{x:-speed});
-	adjustNewSpeedForDirection(Directions.right,{x:speed});
-	adjustNewSpeedForDirection(Directions.up,{y:-speed});
-	adjustNewSpeedForDirection(Directions.down,{y:speed});
-	
+	var newSpeed = calculateNewSpeed();
 	xspeed = newSpeed.x;
 	yspeed = newSpeed.y;
 
 	
 	if (_root.key_strg) {
-		if ((vTimerkugel == 0) and (mana > 0)) {
+		if ((vTimerkugel == 0) and (vManaPoints > 0)) {
 			var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b++;
 			duplicateMovieClip(_root.world.kugel, "kugel"+nextKugelNumber, nextKugelNumber);
 			var currentKugel:MovieClip = _root.world["kugel"+nextKugelNumber]
-			
-			currentKugel._x = this._x;
-			currentKugel._y = (this._y)-25;
-			mana -= 20;
-
-			//action = "cast_"
+			vManaPoints -= 20;
 			
 			
 			// den Kugelspeed auf plus- oder minuswert setzen
 			
 			
-			if (currentDirection == Directions.right) {
-				_root.xKugelspeed = 10;
-				_root.yKugelspeed = 0;
-			} 
 			
-			if (currentDirection == Directions.left) {
-				_root.xKugelspeed = -10;
-				_root.yKugelspeed = 0;
-			}
-			
-			if (currentDirection == Directions.up) {
-				_root.yKugelspeed = -10;
-				_root.xKugelspeed = 0;
-			} 
-			
-			if (currentDirection == Directions.down) {
-				_root.yKugelspeed = 10;
-				_root.xKugelspeed = 0;
-			}
 		}
 		
 
@@ -228,58 +198,75 @@ this.onEnterFrame = function()
 	// ( "int" scheidet einfach die Nachkommastellen ab )
 	_parent._x = int(cam_x);
 	_parent._y = int(cam_y);
-
-	//trace(x_next);
-	//trace(y_next);
-	//trace(HP);
-	//trace(mana);
-	//trace(_root.key_space);
-	//trace(dir);
-	//trace(_root.vNospelllight);
-	//trace(_root.vNolight);
-	//trace(_root.vNokugel);
 	
 	if (_root.key_space == 1)
 	{
-		action = "hit_";
+		vAction = "hit";
 		idle = 0
 	}
 	
 	if (idle)
 	{
-		action = "idle_";
+		vAction = "idle";
 	}
 	if (_root.key_left or _root.key_right or _root.key_up or _root.key_down)
 	{
-		action = "walk_";
+		vAction = "walk";
 	}
 
-	if (HP <= 0)
+	if (this.getHealthPoints() <= 0)
 	{
-		action = "death_";
+		vAction = "death";
 	}
 	
-	if (sword = true)
+	if (vSword = true)
 	{
-		weapon = "sword";
+		vWeapon = "sword";
 	}
 
 	//animationsname definieren 
-	anim = action + currentDirection + "_" + weapon;
+	anim = vAction + "_" + vCurrentDirection + "_" + vWeapon;
 	animations.gotoAndStop(anim);
 
 	this.swapDepths(int(this._y));
-
-	moreaction = "";
-
 	//HP-Balken
-	updateResourceBar(healthBar, HP, 0);
-	//mana-Balken
-	updateResourceBar(manaBar, mana, 0.5);
+	updateResourceBar(this.vHealthBar, this.getHealthPoints(), 0);
+	//vManaPoints-Balken
+	updateResourceBar(this.vManaBar, vManaPoints, 0.5);
 	
 	
 };
 
+
+function calculateNewSpeed() {
+	var newSpeed = {
+		x: 0,
+		y: 0
+	};
+
+	function adjustNewSpeedForDirection(direction, speed_change) {
+		if (_root["key_"+direction] == 1) {
+			 // _root["key_left"] ist das Gleiche wie _root.key_left
+			vCurrentDirection = direction;
+			if (speed_change.x) {
+				// Die Funktion ist innerhalb von this.onEnterFrame und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
+				newSpeed.x = speed_change.x;
+			}
+			if (speed_change.y) {
+				newSpeed.y = speed_change.y;
+			}
+		} else {
+			idle = 1;
+		}
+	}
+	
+	// Mapping von richtung zu geschwindigkeit (left => x = -speed, usw)
+	adjustNewSpeedForDirection(Directions.left, {x: -speed});
+	adjustNewSpeedForDirection(Directions.right, {x: speed});
+	adjustNewSpeedForDirection(Directions.up, {y: -speed});
+	adjustNewSpeedForDirection(Directions.down, {y: speed});
+	return newSpeed;
+}
 
 function updateResourceBar(theBar:MovieClip, currentValue:Number, regen:Number) {
 	if (currentValue== 100) {
