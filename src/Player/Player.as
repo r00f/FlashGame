@@ -1,12 +1,19 @@
 ﻿var sword = true
 var weapon = "";
-var dir = "right_";
+var currentDirection = "right";
 var action = "";
 var HP = 100;
 var mana = 100;
 var vTimerkugel = 0;
 var manaBar = _root.interf.mana_bar
 var healthBar = _root.interf.HP_bar
+
+var Directions = {
+	left : "left",
+	right : "right",
+	up : "up",
+	down : "down"
+}
 
 //wall sichtbar/nicht sichtbar
 _parent.wall._visible = 0;
@@ -16,64 +23,57 @@ var speed = 4;
 // Kamerapositionswerte deklarieren
 var cam_x = int(_parent._x);
 var cam_y = int(_parent._y);
+
+
+
+
 // In jedem Bild wiederkehrend ausgeführter Scriptteil:
 this.onEnterFrame = function()
 {
-
 	// Nun die x- und y-Geschwindigkeiten der Spielfigur zurücksetzen
 	var xspeed = 0;
 	var yspeed = 0;
-	
 
-	// Dann diese Geschwindigkeiten anhand von Tastenbefehlen neu setzen
-	if (_root.key_left == 1)
-	{
-		xspeed = -speed;
-		dir = "left_";
+	var newSpeed = {
+		x: 0,
+		y: 0
+	};
 
-	}
-	if (_root.key_right == 1)
-	{
-		xspeed = speed;
-		dir = "right_";
-	}
-	if (_root.key_up == 1)
-	{
-		yspeed = -speed;
-		dir = "up_";
-	}
-	if (_root.key_down == 1)
-	{
-		yspeed = speed;
-		dir = "down_";
+
+	function adjustNewSpeedForDirection(direction, speed_change) {
+		if (_root["key_"+direction] == 1) {
+			 // _root["key_left"] ist das Gleiche wie _root.key_left
+			currentDirection = direction;
+			if (speed_change.x) {
+				// Die Funktion ist innerhalb von this.onEnterFrame und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
+				newSpeed.x = speed_change.x;
+			}
+			if (speed_change.y) {
+				newSpeed.y = speed_change.y;
+			}
+		} else {
+			idle = 1;
+		}
 	}
 	
-
-	if (_root.key_left == 0)
-	{
-		idle = 1;
-	}
-	if (_root.key_right == 0)
-	{
-		idle = 1;
-	}
-	if (_root.key_up == 0)
-	{
-		idle = 1;
-	}
-	if (_root.key_down == 0)
-	{
-		idle = 1;
-	}
+	// Mapping von richtung zu geschwindigkeit (left => x = -speed, usw)
+	adjustNewSpeedForDirection(Directions.left,{x:-speed});
+	adjustNewSpeedForDirection(Directions.right,{x:speed});
+	adjustNewSpeedForDirection(Directions.up,{y:-speed});
+	adjustNewSpeedForDirection(Directions.down,{y:speed});
 	
+	xspeed = newSpeed.x;
+	yspeed = newSpeed.y;
+
 	
 	if (_root.key_strg) {
-		
 		if ((vTimerkugel == 0) and (mana > 0)) {
-			duplicateMovieClip(_root.world.kugel, "kugel"+_root.vNokugel, _root.vNokugel);
-			_root.world["kugel"+_root.vNokugel]._x = _root.world.player._x;
-			_root.world["kugel"+_root.vNokugel]._y = (_root.world.player._y)-25;
-			_root.vNokugel += 1;
+			var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b++;
+			duplicateMovieClip(_root.world.kugel, "kugel"+nextKugelNumber, nextKugelNumber);
+			var currentKugel:MovieClip = _root.world["kugel"+nextKugelNumber]
+			
+			currentKugel._x = _root.world.player._x;
+			currentKugel._y = (_root.world.player._y)-25;
 			mana -= 20;
 
 			//action = "cast_"
@@ -82,22 +82,22 @@ this.onEnterFrame = function()
 			// den Kugelspeed auf plus- oder minuswert setzen
 			
 			
-			if (dir == "right_") {
+			if (currentDirection == Directions.right) {
 				_root.xKugelspeed = 10;
 				_root.yKugelspeed = 0;
 			} 
 			
-			if (dir == "left_") {
+			if (currentDirection == Directions.left) {
 				_root.xKugelspeed = -10;
 				_root.yKugelspeed = 0;
 			}
 			
-			if (dir == "up_") {
+			if (currentDirection == Directions.up) {
 				_root.yKugelspeed = -10;
 				_root.xKugelspeed = 0;
 			} 
 			
-			if (dir == "down_") {
+			if (currentDirection == Directions.down) {
 				_root.yKugelspeed = 10;
 				_root.xKugelspeed = 0;
 			}
@@ -267,7 +267,7 @@ this.onEnterFrame = function()
 	}
 
 	//animationsname definieren 
-	anim = action + dir + weapon;
+	anim = action + currentDirection + "_" + weapon;
 	animations.gotoAndStop(anim);
 
 	this.swapDepths(int(this._y));
