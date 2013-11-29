@@ -58,16 +58,13 @@ this.onEnterFrame = function()
 
 	
 	if (_root.key_strg) {
-		if ((vTimerkugel == 0) and (vManaPoints >= 20)) {
+		if ((vTimerkugel > 10) and (vManaPoints >= 20)) {
 
 			var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b++;
 			duplicateMovieClip(_root.world.kugel, "kugel"+nextKugelNumber, nextKugelNumber);
 			var currentKugel:MovieClip = _root.world["kugel"+nextKugelNumber]
 			vManaPoints -= 20;
-			
-			
-			// den Kugelspeed auf plus- oder minuswert setzen
-			
+			vTimerkugel = 0;
 			
 			
 		}
@@ -76,9 +73,7 @@ this.onEnterFrame = function()
 	}
 	// nur alle 10 frames abschuss der Kugel möglich
 	vTimerkugel++;
-	if (vTimerkugel == 10) {
-		vTimerkugel = 0;
-	}
+
 	
 	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken: 
 	var x_now = int(this._x);
