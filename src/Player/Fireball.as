@@ -55,8 +55,9 @@ this.onEnterFrame = function()
 	}
 	
 	if (hittest()) {
-		vLight.removeMovieClip()
+		//vLight.removeMovieClip()
 		gotoAndStop("explode");
+		_root.world.darkness.fireball_light.gotoAndPlay("explode");
 		xKugelspeed = 0;
 		yKugelspeed = 0;
 	}	
