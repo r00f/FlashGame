@@ -4,7 +4,6 @@ dir = "right_";
 action = "";
 var HP = 100;
 var mana = 100;
-vNokugel = 0;
 vTimerkugel = 0;
 
 //wall sichtbar/nicht sichtbar
@@ -69,16 +68,11 @@ this.onEnterFrame = function()
 	if (_root.key_strg) {
 		
 		if ((vTimerkugel == 0) and (mana > 0)) {
-			duplicateMovieClip(_root.world.kugel, "kugel"+vNokugel, vNokugel);
-			_root.world["kugel"+vNokugel]._x = _root.world.player._x;
-			_root.world["kugel"+vNokugel]._y = (_root.world.player._y)-25;
-			vNokugel += 1;
+			duplicateMovieClip(_root.world.kugel, "kugel"+_root.vNokugel, _root.vNokugel);
+			_root.world["kugel"+_root.vNokugel]._x = _root.world.player._x;
+			_root.world["kugel"+_root.vNokugel]._y = (_root.world.player._y)-25;
+			_root.vNokugel += 1;
 			mana -= 20;
-			
-			duplicateMovieClip(_root.world.darkness.torch_light, "torch_light"+_root.vNolight, _root.vNolight);
-			_root.vNolight += 1;
-			_root.world.darkness["torch_light"+_root.vNolight]._x = _root.world["kugel"+vNokugel]._x;
-			_root.world.darkness["torch_light"+_root.vNolight]._y = _root.world["kugel"+vNokugel]._y;
 
 			//action = "cast_"
 			
@@ -108,7 +102,7 @@ this.onEnterFrame = function()
 		}
 		// nur alle 10 frames abschuss der Kugel möglich
 		vTimerkugel++;
-		if (vTimerkugel == 10) {
+		if (vTimerkugel == 6) {
 			vTimerkugel = 0;
 		}
 	} /*else {
@@ -132,6 +126,7 @@ this.onEnterFrame = function()
 	// mit Kantenglättung. Daher können wir nun zwei Fliegen mit einer Klappe schlagen und auch
 	// die Qualität temporär auf "high" setzen. Diese Einstellung wird (wie die Verschiebung nach 0/0)
 	// am Ende der Schleife wieder zurückgenommen:
+	
 	_quality = "high";
 	if (xspeed != 0)
 	{
@@ -212,11 +207,16 @@ this.onEnterFrame = function()
 			}
 		}
 	}
+	
+	
 	// Nun, da sämtliche hitTest-Abfragen getätigt wurden, kann das Bild wieder ohne Kantenglättung gerendert werden 
 	//_quality = "low";
 	// Bewegung umsetzen
 	this._x = x_next;
 	this._y = y_next;
+	
+	//this._x = next_coordinates.x;
+	//this._y = next_coordinates.y;
 	// "Kamera" mitbewegen - sprich: Umgebung gegenläufig zur Bewegung der Spielfigur bewegen
 	// Weiches Scrolling:
 	// Zuerst Zielposition für die Kamera ermitteln
@@ -236,7 +236,10 @@ this.onEnterFrame = function()
 	//trace(mana);
 	//trace(_root.key_space);
 	//trace(dir);
-	trace(_root.vNolight);
+	//trace(_root.vNospelllight);
+	//trace(_root.vNolight);
+	//trace(_root.vNokugel);
+	
 	if (_root.key_space == 1)
 	{
 		action = "hit_";
