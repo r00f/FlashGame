@@ -1,4 +1,5 @@
-﻿var sword = true
+﻿#include "src/Utilities/Constants.as"
+var sword = true
 var weapon = "";
 var currentDirection = "right";
 var action = "";
@@ -8,12 +9,6 @@ var vTimerkugel = 0;
 var manaBar = _root.interf.mana_bar
 var healthBar = _root.interf.HP_bar
 
-var Directions = {
-	left : "left",
-	right : "right",
-	up : "up",
-	down : "down"
-}
 
 //wall sichtbar/nicht sichtbar
 _parent.wall._visible = 0;
@@ -24,7 +19,10 @@ var speed = 4;
 var cam_x = int(_parent._x);
 var cam_y = int(_parent._y);
 
-
+// Funktion damit die interne Implementation von der Richtung unabhängig von den anderen ist.
+var getDirection = function () {
+	return currentDirection;
+}
 
 
 // In jedem Bild wiederkehrend ausgeführter Scriptteil:
@@ -72,8 +70,8 @@ this.onEnterFrame = function()
 			duplicateMovieClip(_root.world.kugel, "kugel"+nextKugelNumber, nextKugelNumber);
 			var currentKugel:MovieClip = _root.world["kugel"+nextKugelNumber]
 			
-			currentKugel._x = _root.world.player._x;
-			currentKugel._y = (_root.world.player._y)-25;
+			currentKugel._x = this._x;
+			currentKugel._y = (this._y)-25;
 			mana -= 20;
 
 			//action = "cast_"

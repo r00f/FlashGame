@@ -1,4 +1,5 @@
-﻿stop();
+﻿#include "src/Utilities/Constants.as"
+stop();
 
 //_root.vNospelllight += 1;
 vLight = "";
@@ -6,34 +7,28 @@ xKugelspeed = _root.xKugelspeed;
 yKugelspeed = _root.yKugelspeed;
 vTimer = 0;
 vNumber = _root.vNokugel
+player = _root.world.player;
 //vLightNumber = _root.vNospelllight;
 
+if (player.getDirection() == Directions.right)
+{
+	gotoAndStop(Directions.right);
+}
 
-	if (_root.world.player.dir == "right_")
-	{
-		gotoAndStop("right");
+if (player.getDirection() == Directions.left)
+{
+	gotoAndStop(Directions.left);
+}
 
-	}
-	
-	if (_root.world.player.dir == "left_")
-	{
-		gotoAndStop("left");
+if (player.getDirection() == Directions.up)
+{
+	gotoAndStop(Directions.up);
 
-	}
-	
-		if (_root.world.player.dir == "up_")
-	{
-		gotoAndStop("up");
-
-
-	}
-	
-		if (_root.world.player.dir == "down_")
-	{
-		gotoAndStop("down");
-
-
-	}
+}
+if (player.getDirection() == Directions.down)
+{
+	gotoAndStop(Directions.down);
+}
 
 function hittest() {
 	for (var i = 0; i < _root.vWalls.length; i++) {
@@ -50,8 +45,8 @@ this.onEnterFrame = function()
 	if (vLight == "") {
 		duplicateMovieClip(_root.world.darkness.fireball_light, "fireball_light"+vNumber, vNumber);
 		vLight = _root.world.darkness["fireball_light"+vNumber];
-		vLight._x =   _root.world.player._x;
-		vLight._y =  (_root.world.player._y)-25;
+		vLight._x =   player._x;
+		vLight._y =  (player._y)-25;
 	}
 	
 	if (hittest()) {
@@ -78,11 +73,6 @@ this.onEnterFrame = function()
 	if (vTimer == 50) {
 		this.removeMovieClip();
 	}
-	
-	
-	//_root.world.darkness["fireball_light"+_root.vNospelllight]._x =  _root.world.player._x;
-	//_root.world.darkness["fireball_light"+_root.vNospelllight]._y = (_root.world.player._y)-25;
-	
 
 		
 	this.swapDepths(int(this._y));
