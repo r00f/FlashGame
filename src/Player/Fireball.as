@@ -63,8 +63,7 @@ this.onEnterFrame = function()
 				_parent["gegner"+i]._xscale-=20;
 				_root.vPoints += 50;
 			}
-		// nach 20 frames verschwindet die Kugel
-
+		}
 	} else {
 		gotoAndStop("explode");
 		this.vLight.explode();

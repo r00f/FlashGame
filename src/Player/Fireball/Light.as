@@ -12,9 +12,6 @@ this._x = this.vPlayer.getXPosition() + FireballXOffset;
 this._y = this.vPlayer.getYPosition() + FireballYOffset;
 
 vTimerkugel = 0;
-
-
-gotoAndStop("explode");
 this.setupDirection(FireballSpeed)
 
 // "public" functions
