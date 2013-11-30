@@ -6,8 +6,9 @@ damage = _parent._parent._parent._parent.damage
 knockback = 50
 }
 onClipEvent (enterFrame) {
+	trace("hittest right");
 	if (this.hitTest(_root.world.player.hit_body)) {
 		_root.world.player.knockback(knockback,0);
-		_root.world.playerhit(damage);
+		_root.world.player.Hit(damage);
 	}
 }

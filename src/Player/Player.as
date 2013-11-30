@@ -53,7 +53,7 @@ function spendMana(points) {
 	this.changeMana(-points);
 }
 
-function hit(damage:Number) {
+function Hit(damage:Number) {
 	this.changeHealth(-damage);
 }
 
@@ -135,7 +135,6 @@ this.onEnterFrame = function()
 	//vManaPoints-Balken
 	updateResourceBar(this.vManaBar, this.getManaPoints(), this.vMaxMana);
 	
-	trace(this.vManaPoints);
 	this.regenerate()
 	
 };

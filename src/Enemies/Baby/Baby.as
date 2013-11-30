@@ -1,7 +1,12 @@
-﻿moreaction = "";
+﻿#include "src/Utilities/Constants.as"
+moreaction = "";
 dir = ""
 action = "idle"
 var HP = 100;
+
+function getDirection() {
+	return dir;
+}
 
 
 x_fix = int(this._x);
@@ -12,8 +17,6 @@ vertical_limit = 50
 // Normgeschwindigkeit
 speed = random(6)+2;
 xspeed = 6;
-right = "right"
-left = "left"
 
 damage = 1/speed * 100
 
@@ -36,23 +39,23 @@ yspeed = 0;
 
 	if (x_now < (x_fix - horizontal_limit)) {
 		xspeed = speed;
-		dir = right;
+		dir = Directions.right;
 		
 	}
 	
 	if (x_now > (x_fix + horizontal_limit)) {
 		xspeed = -speed;
-		dir = left;
+		dir =  Directions.left;
 	}
 	
 	if (y_next > (y_fix + vertical_limit)) {
 		yspeed = -speed;
-		dir = "up";
+		dir =  Directions.up;
 	}
 	
 	if (y_next < (y_fix - vertical_limit)) {
 		yspeed = speed;
-		dir = "down";
+		dir =  Directions.down;
 	}
 
 	
