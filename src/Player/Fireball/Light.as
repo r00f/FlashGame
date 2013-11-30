@@ -8,6 +8,8 @@ var vPlayer:MovieClip = _root.world.player;
 var vKugelSpeedX:Number = 0;
 var vKugelSpeedY:Number = 0;
 var vIsExploding:Boolean = false;
+
+var vIsExploded = false;
 this._x = this.vPlayer.getXPosition() + FireballXOffset;
 this._y = this.vPlayer.getYPosition() + FireballYOffset;
 
@@ -25,10 +27,12 @@ this.onEnterFrame = function() {
 	if (!this.vIsExploding) {
 		this._x += this.vKugelSpeedX;
 		this._y += this.vKugelSpeedY;
-	} else {
+	} else if (!this.vIsExploded){
 		this.vKugelSpeedY = 0;
 		this.vKugelSpeedX = 0;
 		gotoAndStop("explode");
+		
+		this.vIsExploded = true;
 	}
 	vTimerkugel += 1;
 	if (vTimerkugel == 50) {

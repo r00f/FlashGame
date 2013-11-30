@@ -13,6 +13,7 @@ var vNumber = _root.vNokugel;
 var vFireballLightName:String = "fireball_light" + vNumber;
 
 var vIsExploding = false;
+var vIsExploded = false;
 
 var vLight;
 var vTimer = 0;
@@ -44,7 +45,7 @@ function hittest() {
 this.onEnterFrame = function()
 {
 	if (!vLight) {
-		duplicateMovieClip(vOriginalFireballLight, vFireballLightName, vNumber);
+		duplicateMovieClip(this.vOriginalFireballLight, this.vFireballLightName, this.vNumber);
 		vLight = _root.world.darkness[vFireballLightName];
 
 	}
@@ -64,11 +65,12 @@ this.onEnterFrame = function()
 				_root.vPoints += 50;
 			}
 		}
-	} else {
+	} else if (!this.vIsExploded) {
 		gotoAndStop("explode");
 		this.vLight.explode();
 		this.vKugelSpeedX = 0;
 		this.vKugelSpeedY = 0;
+		this.vIsExploded = true;
 	}
 	this.swapDepths(int(this._y));
 	vTimer += 1;
