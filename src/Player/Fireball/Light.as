@@ -30,7 +30,7 @@ this.onEnterFrame = function() {
 	} else if (!this.vIsExploded){
 		this.vKugelSpeedY = 0;
 		this.vKugelSpeedX = 0;
-		gotoAndStop("explode");
+		gotoAndPlay("explode");
 		
 		this.vIsExploded = true;
 	}

@@ -18,18 +18,19 @@ var vIsExploded = false;
 var vLight;
 var vTimer = 0;
 
+
 /* "public" functions   */
 
 /* SETUP */
-this.setupDirection(FireballSpeed)
+if (vNumber > 0) {
+	this.setupDirection(FireballSpeed)
 
-this._x = this.vPlayer.getXPosition() + FireballXOffset;
-this._y = this.vPlayer.getYPosition() + FireballYOffset;
+	this._x = this.vPlayer.getXPosition() + FireballXOffset;
+	this._y = this.vPlayer.getYPosition() + FireballYOffset;
 
-// Set Direction to the same the player is facing
-
-gotoAndStop(this.vPlayer.getDirection());
-
+	// Set Direction to the same the player is facing
+	gotoAndStop(this.vPlayer.getDirection());
+}
 
 
 function hittest() {
@@ -44,7 +45,7 @@ function hittest() {
 
 this.onEnterFrame = function()
 {
-	if (!vLight) {
+	if (!vLight && this.vNumber > 0) {
 		duplicateMovieClip(this.vOriginalFireballLight, this.vFireballLightName, this.vNumber);
 		vLight = _root.world.darkness[vFireballLightName];
 
