@@ -40,8 +40,8 @@ function getKnockback() {
 var vFixPositionX = int(this._x);
 var vFixPositionY  = int(this._y);
 
-var vHorizontalLimit = 100
-var vVerticalLimit = 50
+var vHorizontalLimit = 100;
+var vVerticalLimit = 50;
 
 var vWait = random(24);
 

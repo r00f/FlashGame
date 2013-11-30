@@ -26,7 +26,7 @@
 // "private" variables
 
 /* Animation-Related Vars */
-var vSword:Boolean = true
+var vSword:Boolean = true;
 var vWeapon:String = "";
 var vAction:String = "";
 var vCurrentDirection:String = Directions.right;
@@ -36,8 +36,8 @@ var idle = 1;
 /* Health / Mana */
 var vMaxMana = 100;
 var vMaxHealth = 100;
-var vManaBar:MovieClip = _root.interf.mana_bar
-var vHealthBar:MovieClip = _root.interf.HP_bar
+var vManaBar:MovieClip = _root.interf.mana_bar;
+var vHealthBar:MovieClip = _root.interf.HP_bar;
 var vHealthRegeneration:Number = 0;
 var vManaRegeneration:Number = 0.5;
 
@@ -45,8 +45,8 @@ var vManaRegeneration:Number = 0.5;
 var vTimerkugel = 0;
 var vFireBallManaCost = 20;
 var vFireBallWaitFrames = 10;
-var vFireBallOriginal:MovieClip = _root.world.kugel
-var vFireBallName = "kugel"
+var vFireBallOriginal:MovieClip = _root.world.kugel;
+var vFireBallName = "kugel";
 
 var x_next;
 var y_next;
@@ -128,16 +128,16 @@ this.onEnterFrame = function()
 
 function handleFireball() {
 	if (_root.key_strg) {
-		this.shootFireBallIfPossible()
+		this.shootFireBallIfPossible();
 	}
 	vTimerkugel++;
 }
 
 function shootFireBallIfPossible() {
 	if ((vTimerkugel > vFireBallWaitFrames) and (this.getManaPoints() >= vFireBallManaCost)) {
-		var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b += 1;
-		var nextFireBallName = vFireBallName + nextKugelNumber;
-		duplicateMovieClip(vFireBallOriginal, nextFireBallName, nextKugelNumber);
+		// var a = b++ bedeutet var a = b; b += 1;
+		var nextFireBallNumber = _root.vNokugel++; 
+		duplicateMovieClip(vFireBallOriginal, vFireBallName + nextFireBallNumber, nextFireBallNumber);
 		this.spendMana(vFireBallManaCost);
 		vTimerkugel = 0;	
 	}
@@ -150,24 +150,24 @@ function move() {
 }
 
 function calculateNewSpeed() {
-
 	var xSpeedMultiplier = 0;
 	var ySpeedMultiplier = 0;
+
 	if (isDirectionKeyPressed(Directions.left)) {
 		xSpeedMultiplier = -1;
-		this.vCurrentDirection = Directions.left
+		this.vCurrentDirection = Directions.left;
 	}
 	if (isDirectionKeyPressed(Directions.right)) {
 		xSpeedMultiplier = 1;
-		this.vCurrentDirection = Directions.right
+		this.vCurrentDirection = Directions.right;
 	}
 	if (isDirectionKeyPressed(Directions.up)) {
 		ySpeedMultiplier = -1;
-		this.vCurrentDirection = Directions.up
+		this.vCurrentDirection = Directions.up;
 	}
 	if (isDirectionKeyPressed(Directions.down)) {
 		ySpeedMultiplier = 1;
-		this.vCurrentDirection = Directions.down
+		this.vCurrentDirection = Directions.down;
 	}
 	if (xSpeedMultiplier != 0 and ySpeedMultiplier != 0) {
 		ySpeedMultiplier /= Math.sqrt(2);
@@ -201,7 +201,7 @@ function moveCamera() {
 function animate() {
 	if (_root.key_space == 1) {
 		this.vAction = "hit";
-		this.idle = 0
+		this.idle = 0;
 	}
 	if (this.idle) {
 		this.vAction = "idle";
@@ -215,10 +215,8 @@ function animate() {
 	if (this.vSword = true) {
 		this.vWeapon = "sword";
 	}
-
-	//animationsname definieren 
-	var anim = this.vAction + "_" + this.vCurrentDirection + "_" + this.vWeapon;
-	animations.gotoAndStop(anim);
+	var animationName = this.vAction + "_" + this.vCurrentDirection + "_" + this.vWeapon;
+	animations.gotoAndStop(animationName);
 }
 
 function updateResourceBar(theBar:MovieClip, percent:Number) {

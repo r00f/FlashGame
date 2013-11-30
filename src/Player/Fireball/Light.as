@@ -14,7 +14,7 @@ this._x = this.vPlayer.getXPosition() + FireballXOffset;
 this._y = this.vPlayer.getYPosition() + FireballYOffset;
 
 vTimerkugel = 0;
-this.setupDirection(FireballSpeed)
+this.setupDirection(FireballSpeed) // Utilities.as
 
 // "public" functions
 

@@ -23,7 +23,7 @@ var vTimer = 0;
 
 /* SETUP */
 if (vNumber > 0) {
-	this.setupDirection(FireballSpeed)
+	this.setupDirection(FireballSpeed) // Utilities.as
 
 	this._x = this.vPlayer.getXPosition() + FireballXOffset;
 	this._y = this.vPlayer.getYPosition() + FireballYOffset;
