@@ -1,4 +1,5 @@
 function calculateNextPosition(xspeed, yspeed) {
+	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken: 
 	var x_now = int(this._x);
 	var y_now = int(this._y);
 	// ---- Kollision in x-Richtung ----

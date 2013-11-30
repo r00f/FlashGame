@@ -3,10 +3,8 @@
 	#include "src/Utilities/Constants.as"
 
 	var vBaby = _parent._parent._parent._parent;
-	//vHit = 0;
-	damage = vBaby.damage
-	//trace("damage: " + damage)
-	var vAbsoluteKnockback = 50
+	damage = vBaby.getDamage()
+	var vAbsoluteKnockback = vBaby.getKnockback()
 	var vKnockback = vAbsoluteKnockback;
 }
 onClipEvent (enterFrame) {

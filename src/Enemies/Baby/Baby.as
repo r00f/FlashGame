@@ -1,88 +1,96 @@
 ﻿#include "src/Utilities/Constants.as"
 #include "src/Utilities/Movement.as"
 
-moreaction = "";
-dir = ""
-action = "idle"
-var HP = 100;
+/* "Documentation" 
+	
+	Baby
+		- doAttack() : Does the attack in the next frame
+		- getDirection() : Returns the direction
+		- getDamage() : Returns the damage
+		- getKnockback() : Returns the knoback its attack does
+
+*/
+
+var vHit = false;
+var vAction;
+
+var vDirection = Directions.right;
+
+var vSpeed = random(6)+2;
+var vXSpeed = this.vSpeed;
+var vYSpeed = 0;
+
+var vDamage = 1/this.vSpeed * 100;
+var vKnockback = 50;
+
+function doAttack() {
+	this.vHit = true;
+}
 
 function getDirection() {
-	return dir;
+	return this.vDirection;
 }
+
+function getDamage() {
+	return this.vDamage;
+}
+function getKnockback() {
+	return this.vKnockback;
+}
+var vFixPositionX = int(this._x);
+var vFixPositionY  = int(this._y);
+
+var vHorizontalLimit = 100
+var vVerticalLimit = 50
+
+var vWait = random(24);
 
 var x_next;
 var y_next;
 
-x_fix = int(this._x);
-y_fix = int(this._y);
-
-horizontal_limit = 100
-vertical_limit = 50
-// Normgeschwindigkeit
-speed = random(6)+2;
-xspeed = 6;
-
-damage = 1/speed * 100
-
-wait = random(24);
 // In jedem Bild wiederkehrend ausgeführter Scriptteil:
 this.onEnterFrame = function() {
 	
-// Nun die x- und y-Geschwindigkeiten der Spielfigur zurücksetzen
-if (wait > 0) {
-	wait = wait - 1;
-	return;
-}
-yspeed = 0;	
-
-	if (moreaction == "hit") {
-		action = "hit_";
-		xspeed = 0;
+	if (vWait > 0) {
+		vWait = vWait - 1;
+		return;
 	}
 	
+	
+	if (this.vHit) {
+		vXSpeed = 0;
+		vYSpeed = 0;	
+		this.vAction = "hit_";
+	} else {
 
-	if (x_next < (x_fix - horizontal_limit)) {
-		xspeed = speed;
-		dir = Directions.right;
+
+		if (this._x < (vFixPositionX - vHorizontalLimit)) {
+			vXSpeed = this.vSpeed;
+			this.vDirection = Directions.right;
+		}
+		if (this._x > (vFixPositionX + vHorizontalLimit)) {
+
+			vXSpeed = -this.vSpeed;
+			this.vDirection =  Directions.left;
+		}
 		
-	}
-	
-	if (x_next > (x_fix + horizontal_limit)) {
-		xspeed = -speed;
-		dir =  Directions.left;
-	}
-	
-	if (y_next > (y_fix + vertical_limit)) {
-		yspeed = -speed;
-		dir =  Directions.up;
-	}
-	
-	if (y_next < (y_fix - vertical_limit)) {
-		yspeed = speed;
-		dir =  Directions.down;
-	}
-	
-	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken:
-	calculateNextPosition(xspeed, yspeed) // Movement.as
+		if (this._y > (vFixPositionY + vVerticalLimit)) {
+			vYSpeed = -this.vSpeed;
+			this.vDirection =  Directions.up;
+		}
+		
+		if (this._y < (vFixPositionY - vVerticalLimit)) {
+			vYSpeed = this.vSpeed;
+			this.vDirection =  Directions.down;
+		}
+		calculateNextPosition(vXSpeed, vYSpeed) // Movement.as
 
-	if (idle) {
-		action = "idle_";
-	}
-	if (xspeed != 0 or yspeed !=0) {
-		action = "baby_walk_";
+		if (vXSpeed != 0 or vYSpeed !=0) {
+			this.vAction = "baby_walk_";
+		}
 	}
 
-
-	
-    //animationsname definieren
-	anim = action+dir;
-	
-	animations.gotoAndStop(anim);
-	
-	
-	moreaction = "";
-
+	animations.gotoAndStop(this.vAction+this.vDirection);
 	this.swapDepths(int(this._y));
-
 };
 
