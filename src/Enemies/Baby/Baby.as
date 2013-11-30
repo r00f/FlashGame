@@ -68,7 +68,6 @@ yspeed = 0;
 	if (idle) {
 		action = "idle_";
 	}
-	trace (xspeed + "  - " +  yspeed)
 	if (xspeed != 0 or yspeed !=0) {
 		action = "baby_walk_";
 	}

@@ -139,14 +139,6 @@ this.onEnterFrame = function()
 	
 }
 
-function regenerate() {
-	if (this.getManaPoints() < this.vMaxMana) {
-		this.changeMana(vManaRegeneration);
-		this.changeHealth(vHealthRegeneration);
-	}
-}
-
-
 function handleFireball() {
 	if (_root.key_strg) {
 		this.shootFireBallIfPossible()
@@ -164,6 +156,15 @@ function shootFireBallIfPossible() {
 		vTimerkugel = 0;	
 	}
 }
+
+function regenerate() {
+	if (this.getManaPoints() < this.vMaxMana) {
+		this.changeMana(vManaRegeneration);
+		this.changeHealth(vHealthRegeneration);
+	}
+}
+
+
 
 function animate() {
 	if (_root.key_space == 1) {
@@ -223,40 +224,38 @@ function calculateNewSpeed() {
 		x: 0,
 		y: 0
 	};
-
-	function adjustNewSpeedForDirection(direction, speed_change) {
-		if (_root["key_"+direction] == 1) {
-			 // _root["key_left"] ist das Gleiche wie _root.key_left
-			vCurrentDirection = direction;
-			if (speed_change.x) {
-				// Die Funktion ist innerhalb von calculateNewSpeed und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
-				newSpeed.x = speed_change.x;
-			}
-			if (speed_change.y) {
-				newSpeed.y = speed_change.y;
-			}
-		} else {
-			this.idle = 1;
-		}
+	if (isDirectionKeyPressed(Directions.left)) {
+		newSpeed.x = -speed;
+		this.vCurrentDirection = Directions.left
 	}
-	
-	// Mapping von richtung zu geschwindigkeit (left => x = -speed, usw)
-	adjustNewSpeedForDirection(Directions.left, {x: -speed});
-	adjustNewSpeedForDirection(Directions.right, {x: speed});
-	adjustNewSpeedForDirection(Directions.up, {y: -speed});
-	adjustNewSpeedForDirection(Directions.down, {y: speed});
+	if (isDirectionKeyPressed(Directions.right)) {
+		newSpeed.x = speed;
+		this.vCurrentDirection = Directions.right
+	}
+	if (isDirectionKeyPressed(Directions.up)) {
+		newSpeed.y = -speed;
+		this.vCurrentDirection = Directions.up
+	}
+	if (isDirectionKeyPressed(Directions.down)) {
+		newSpeed.y = speed;
+		this.vCurrentDirection = Directions.down
+	}
 	return newSpeed;
 }
 
+function isDirectionKeyPressed(direction) {
+	return _root["key_"+direction] == 1;
+}
+
 function move() {
-	var xspeed = 0;
-	var yspeed = 0;
 
-	var newSpeed = calculateNewSpeed();
 	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken: 
+	var newSpeed = calculateNewSpeed();
+	calculateNextPosition(newSpeed.x,newSpeed.y);
+	moveCamera();
+}
 
-	calculateNextPosition(newSpeed.x, newSpeed.y);
-	
+function moveCamera() {
 	// "Kamera" mitbewegen - sprich: Umgebung gegenläufig zur Bewegung der Spielfigur bewegen
 	// Weiches Scrolling:
 	// Zuerst Zielposition für die Kamera ermitteln
