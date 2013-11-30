@@ -5,15 +5,20 @@
 
  Player
  	- getDirection() : Returns String with the Direction
+
  	- getXPosition() : Returns the current X Coordinate
  	- getYPosition() : Returns the current Y Coordinate
+
  	- getHealthPoints() : Returns the Health Amount
  	- getHealthPercentage() : Returns % of Health Remaining between 0 and 1
+ 	- Hit(damage:Number) : Reduces the life by damage
+
  	- getManaPoints() : Returns the Mana Points
  	- getManaPercentage() : Returns % of Mana Remaining between 0 and 1
  	- spendMana(points:Number) : Spends points ManaPoints
- 	- Hit(damage:Number) : Reduces the life by damage
 
+ 	- knockback(xDistance, yDistance) : Knocks the player back by xDistance and yDistance
+ 	
 */
 
 // "private" variables
@@ -23,6 +28,7 @@ var vSword:Boolean = true
 var vWeapon:String = "";
 var vAction:String = "";
 var vCurrentDirection:String = Directions.right;
+var idle = 1;
 
 
 /* Health / Mana */
@@ -48,6 +54,15 @@ var vHealthPoints =  100;
 
 
 var kugelSpeed = {x: 0, y: 0}
+
+//wall sichtbar/nicht sichtbar
+_parent.wall._visible = 0;
+
+// Normgeschwindigkeit
+var speed = 4;
+// Kamerapositionswerte deklarieren
+var cam_x = int(_parent._x);
+var cam_y = int(_parent._y);
 
 
 // "public" functions
@@ -87,7 +102,10 @@ function Hit(damage:Number) {
 	this.changeHealth(-damage);
 }
 
-
+function knockback(xDistance:Number, yDistance:Number) {
+	x_next += xDistance;
+	y_next += yDistance;
+}
 
 
 // Helper Functions
@@ -100,23 +118,7 @@ function changeHealth(change) {
 	this.vHealthPoints += change;	
 }
 
-function knockback(xDistance:Number, yDistance:Number) {
-	x_next += xDistance;
-	y_next += yDistance;
-}
 
-//wall sichtbar/nicht sichtbar
-_parent.wall._visible = 0;
-
-// Normgeschwindigkeit
-var speed = 4;
-// Kamerapositionswerte deklarieren
-var cam_x = int(_parent._x);
-var cam_y = int(_parent._y);
-
-
-
-// In jedem Bild wiederkehrend ausgeführter Scriptteil:
 this.onEnterFrame = function()
 {
 	handleFireball();
@@ -134,38 +136,6 @@ this.onEnterFrame = function()
 	this.regenerate()
 	
 }
-
-function animate() {
-	if (_root.key_space == 1)
-	{
-		vAction = "hit";
-		idle = 0
-	}
-	
-	if (idle)
-	{
-		vAction = "idle";
-	}
-	if (_root.key_left or _root.key_right or _root.key_up or _root.key_down)
-	{
-		vAction = "walk";
-	}
-
-	if (this.getHealthPoints() <= 0)
-	{
-		vAction = "death";
-	}
-	
-	if (vSword = true)
-	{
-		vWeapon = "sword";
-	}
-
-	//animationsname definieren 
-	var anim = vAction + "_" + vCurrentDirection + "_" + vWeapon;
-	animations.gotoAndStop(anim);
-}
-
 
 function regenerate() {
 	if (this.getManaPoints() < this.vMaxMana) {
@@ -193,36 +163,29 @@ function shootFireBallIfPossible() {
 	}
 }
 
-
-function calculateNewSpeed() {
-	var newSpeed = {
-		x: 0,
-		y: 0
-	};
-
-	function adjustNewSpeedForDirection(direction, speed_change) {
-		if (_root["key_"+direction] == 1) {
-			 // _root["key_left"] ist das Gleiche wie _root.key_left
-			vCurrentDirection = direction;
-			if (speed_change.x) {
-				// Die Funktion ist innerhalb von calculateNewSpeed und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
-				newSpeed.x = speed_change.x;
-			}
-			if (speed_change.y) {
-				newSpeed.y = speed_change.y;
-			}
-		} else {
-			idle = 1;
-		}
+function animate() {
+	if (_root.key_space == 1) {
+		this.vAction = "hit";
+		this.idle = 0
 	}
-	
-	// Mapping von richtung zu geschwindigkeit (left => x = -speed, usw)
-	adjustNewSpeedForDirection(Directions.left, {x: -speed});
-	adjustNewSpeedForDirection(Directions.right, {x: speed});
-	adjustNewSpeedForDirection(Directions.up, {y: -speed});
-	adjustNewSpeedForDirection(Directions.down, {y: speed});
-	return newSpeed;
+	if (this.idle) {
+		this.vAction = "idle";
+	}
+	if (_root.key_left or _root.key_right or _root.key_up or _root.key_down) {
+		this.vAction = "walk";
+	}
+	if (this.getHealthPoints() <= 0) {
+		this.vAction = "death";
+	}
+	if (this.vSword = true) {
+		this.vWeapon = "sword";
+	}
+
+	//animationsname definieren 
+	var anim = this.vAction + "_" + this.vCurrentDirection + "_" + this.vWeapon;
+	animations.gotoAndStop(anim);
 }
+
 
 function updateResourceBar(theBar:MovieClip, percent:Number) {
 	if (percent >= 0.999) {
@@ -250,6 +213,38 @@ function updateResourceBar(theBar:MovieClip, percent:Number) {
 	}
 }
 
+
+/* Moving */
+
+function calculateNewSpeed() {
+	var newSpeed = {
+		x: 0,
+		y: 0
+	};
+
+	function adjustNewSpeedForDirection(direction, speed_change) {
+		if (_root["key_"+direction] == 1) {
+			 // _root["key_left"] ist das Gleiche wie _root.key_left
+			vCurrentDirection = direction;
+			if (speed_change.x) {
+				// Die Funktion ist innerhalb von calculateNewSpeed und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
+				newSpeed.x = speed_change.x;
+			}
+			if (speed_change.y) {
+				newSpeed.y = speed_change.y;
+			}
+		} else {
+			this.idle = 1;
+		}
+	}
+	
+	// Mapping von richtung zu geschwindigkeit (left => x = -speed, usw)
+	adjustNewSpeedForDirection(Directions.left, {x: -speed});
+	adjustNewSpeedForDirection(Directions.right, {x: speed});
+	adjustNewSpeedForDirection(Directions.up, {y: -speed});
+	adjustNewSpeedForDirection(Directions.down, {y: speed});
+	return newSpeed;
+}
 
 function move() {
 	var xspeed = 0;
