@@ -130,7 +130,6 @@ function handleFireball() {
 	if (_root.key_strg) {
 		this.shootFireBallIfPossible()
 	}
-	// nur alle 10 frames abschuss der Kugel möglich
 	vTimerkugel++;
 }
 
@@ -145,8 +144,6 @@ function shootFireBallIfPossible() {
 }
 
 function move() {
-
-	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken: 
 	var newSpeed = calculateNewSpeed();
 	calculateNextPosition(newSpeed.x,newSpeed.y); // Movement.as
 	moveCamera();
@@ -177,7 +174,7 @@ function calculateNewSpeed() {
 }
 
 function isDirectionKeyPressed(direction) {
-	return _root["key_"+direction] == 1;
+	return _root["key_"+direction] == 1; //_root["key_left"] ist dasselbe wie _root.key_left
 }
 
 function moveCamera() {
@@ -191,8 +188,8 @@ function moveCamera() {
 	cam_y = cam_y + (cam_y_aim - cam_y) * 0.1;
 	// Dabei sollte die Umgebung immer exakt im Pixelraster sitzen, daher hier nur ganze Zahlenwerte zulassen:
 	// ( "int" scheidet einfach die Nachkommastellen ab )
-	_parent._x = int(cam_x);
-	_parent._y = int(cam_y);
+	_root.world._x = int(cam_x);
+	_root.world._y = int(cam_y);
 }
 
 function animate() {
