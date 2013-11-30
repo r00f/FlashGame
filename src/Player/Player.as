@@ -203,6 +203,9 @@ function animate() {
 		this.vAction = "hit";
 		this.idle = 0;
 	}
+		else {
+		this.idle = 1;
+	}
 	if (this.idle) {
 		this.vAction = "idle";
 	}
