@@ -1,21 +1,44 @@
 ﻿#include "src/Utilities/Constants.as"
 #include "src/Utilities/Utilities.as"
 
+/* Interface "Documentation" 
+
+ Player
+ 	- getDirection() : Returns String with the Direction
+ 	- getXPosition() : Returns the current X Coordinate
+ 	- getYPosition() : Returns the current Y Coordinate
+ 	- getHealthPoints() : Returns the Health Amount
+ 	- getHealthPercentage() : Returns % of Health Remaining between 0 and 1
+ 	- getManaPoints() : Returns the Mana Points
+ 	- getManaPercentage() : Returns % of Mana Remaining between 0 and 1
+ 	- spendMana(points:Number) : Spends points ManaPoints
+ 	- Hit(damage:Number) : Reduces the life by damage
+
+*/
+
 // "private" variables
+
+/* Animation-Related Vars */
 var vSword:Boolean = true
 var vWeapon:String = "";
-var vCurrentDirection:String =Directions.right;
 var vAction:String = "";
-var vTimerkugel = 0;
+var vCurrentDirection:String = Directions.right;
+
+
+/* Health / Mana */
+var vMaxMana = 100;
+var vMaxHealth = 100;
 var vManaBar:MovieClip = _root.interf.mana_bar
 var vHealthBar:MovieClip = _root.interf.HP_bar
 var vHealthRegeneration:Number = 0;
 var vManaRegeneration:Number = 0.5;
 
-var vMaxMana = 100;
-var vMaxHealth = 100;
+/* Fireball */
+var vTimerkugel = 0;
 var vFireBallManaCost = 20;
 var vFireBallWaitFrames = 10;
+var vFireBallOriginal:MovieClip = _root.world.kugel
+var vFireBallName = "kugel"
 
 var xnext = 0;
 var ynext = 0;
@@ -45,11 +68,18 @@ function getHealthPoints() {
 	return this.vHealthPoints;
 }
 
+function getHealthPercentage() {
+	return 1.0/this.vMaxHealth * this.vHealthPoints;
+}
+
 function getManaPoints() {
 	return this.vManaPoints;
 }
+function getManaPercentage() {
+	return 1.0/this.vMaxMana * this.vManaPoints;
+}
 
-function spendMana(points) {
+function spendMana(points:Number) {
 	this.changeMana(-points);
 }
 
@@ -89,17 +119,23 @@ var cam_y = int(_parent._y);
 // In jedem Bild wiederkehrend ausgeführter Scriptteil:
 this.onEnterFrame = function()
 {
-	// Nun die x- und y-Geschwindigkeiten der Spielfigur zurücksetzen
-	if (_root.key_strg) {
-		this.shootFireBallIfPossible()
-	}
-	
-	// nur alle 10 frames abschuss der Kugel möglich
-	vTimerkugel++;
+	handleFireball();
 
+	move();
 	
-	move()
+	animate();
 	
+	this.swapDepths(int(this._y));
+
+	updateResourceBar(this.vHealthBar, this.getHealthPercentage());
+
+	updateResourceBar(this.vManaBar, this.getManaPercentage());
+	
+	this.regenerate()
+	
+}
+
+function animate() {
 	if (_root.key_space == 1)
 	{
 		vAction = "hit";
@@ -128,16 +164,7 @@ this.onEnterFrame = function()
 	//animationsname definieren 
 	var anim = vAction + "_" + vCurrentDirection + "_" + vWeapon;
 	animations.gotoAndStop(anim);
-
-	this.swapDepths(int(this._y));
-	//HP-Balken
-	updateResourceBar(this.vHealthBar, this.getHealthPoints(), this.vMaxHealth);
-	//vManaPoints-Balken
-	updateResourceBar(this.vManaBar, this.getManaPoints(), this.vMaxMana);
-	
-	this.regenerate()
-	
-};
+}
 
 
 function regenerate() {
@@ -147,11 +174,20 @@ function regenerate() {
 	}
 }
 
+
+function handleFireball() {
+	if (_root.key_strg) {
+		this.shootFireBallIfPossible()
+	}
+	// nur alle 10 frames abschuss der Kugel möglich
+	vTimerkugel++;
+}
+
 function shootFireBallIfPossible() {
 	if ((vTimerkugel > vFireBallWaitFrames) and (this.getManaPoints() >= vFireBallManaCost)) {
 		var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b += 1;
-		duplicateMovieClip(_root.world.kugel, "kugel"+nextKugelNumber, nextKugelNumber);
-		var currentKugel:MovieClip = _root.world["kugel"+nextKugelNumber]
+		var nextFireBallName = vFireBallName + nextKugelNumber;
+		duplicateMovieClip(vFireBallOriginal, nextFireBallName, nextKugelNumber);
 		this.spendMana(vFireBallManaCost);
 		vTimerkugel = 0;	
 	}
@@ -188,28 +224,28 @@ function calculateNewSpeed() {
 	return newSpeed;
 }
 
-function updateResourceBar(theBar:MovieClip, currentValue:Number, maxValue:Number) {
-	if (currentValue == maxValue) {
+function updateResourceBar(theBar:MovieClip, percent:Number) {
+	if (percent >= 0.999) {
 		theBar.gotoAndStop("hundert");
-	} else if (currentValue >= maxValue/10*9) {
+	} else if (percent >= 0.9) {
 		theBar.gotoAndStop("neun");
-	} else if (currentValue >= maxValue/10*8) {
+	} else if (percent >= 0.8) {
 		theBar.gotoAndStop("acht");
-	} else if (currentValue >= maxValue/10*7) {
+	} else if (percent >= 0.7) {
 		theBar.gotoAndStop("sieben");
-	} else if (currentValue >= maxValue/10*6) {
+	} else if (percent >= 0.6) {
 		theBar.gotoAndStop("sechs");
-	} else if (currentValue >= maxValue/10*5) {
+	} else if (percent >= 0.5) {
 		theBar.gotoAndStop("fuenf");
-	} else if (currentValue >= maxValue/10*4) {
+	} else if (percent >= 0.4) {
 		theBar.gotoAndStop("vier");
-	} else if (currentValue >= maxValue/10*3) {
+	} else if (percent >= 0.3) {
 		theBar.gotoAndStop("drei");
-	} else if (currentValue >= maxValue/10*2) {
+	} else if (percent >= 0.2) {
 		theBar.gotoAndStop("zwei");
-	} else if (currentValue >= maxValue/10*1) {
+	} else if (percent >= 0.1) {
 		theBar.gotoAndStop("eins");
-	} else if (currentValue >= 0) {
+	} else if (percent >= 0) {
 		theBar.gotoAndStop("null");
 	}
 }
