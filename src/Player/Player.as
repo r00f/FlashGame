@@ -6,21 +6,23 @@ var vSword:Boolean = true
 var vWeapon:String = "";
 var vCurrentDirection:String =Directions.right;
 var vAction:String = "";
-var vHP:Number = 100;
-var vManaPoints:Number = 100;
 var vTimerkugel = 0;
 var vManaBar:MovieClip = _root.interf.mana_bar
 var vHealthBar:MovieClip = _root.interf.HP_bar
 var vHealthRegeneration:Number = 0;
 var vManaRegeneration:Number = 0.5;
 
+var vMaxMana = 100;
+var vMaxHealth = 100;
+var vFireBallManaCost = 20;
+var vFireBallWaitFrames = 10;
+
 var xnext = 0;
 var ynext = 0;
 
-var vStats = {
-	Mana: 100,
-	Health: 100
-}
+var vManaPoints =  100;
+var vHealthPoints =  100;
+
 
 var kugelSpeed = {x: 0, y: 0}
 
@@ -28,7 +30,6 @@ var kugelSpeed = {x: 0, y: 0}
 // "public" functions
 
 function getDirection() {
-	// Funktion damit die interne Implementation von der Richtung unabhängig von den anderen ist.
 	return vCurrentDirection;
 }
 
@@ -41,15 +42,32 @@ function getYPosition() {
 }
 
 function getHealthPoints() {
-	return this.vStats.Health;
+	return this.vHealthPoints;
 }
 
 function getManaPoints() {
-	return this.vStats.Mana;
+	return this.vManaPoints;
+}
+
+function spendMana(points) {
+	this.changeMana(-points);
 }
 
 function hit(damage:Number) {
-	this.vStats.Health -= damage;
+	this.changeHealth(-damage);
+}
+
+
+
+
+// Helper Functions
+
+function changeMana(change) {
+	this.vManaPoints += change;
+}
+
+function changeHealth(change) {
+	this.vHealthPoints += change;	
 }
 
 function knockback(xDistance:Number, yDistance:Number) {
@@ -113,19 +131,29 @@ this.onEnterFrame = function()
 
 	this.swapDepths(int(this._y));
 	//HP-Balken
-	updateResourceBar(this.vHealthBar, this.vStats.Health, this.vHealthRegeneration);
+	updateResourceBar(this.vHealthBar, this.getHealthPoints(), this.vMaxHealth);
 	//vManaPoints-Balken
-	updateResourceBar(this.vManaBar, this.vStats.Mana, this.vManaRegeneration);
+	updateResourceBar(this.vManaBar, this.getManaPoints(), this.vMaxMana);
 	
+	trace(this.vManaPoints);
+	this.regenerate()
 	
 };
 
+
+function regenerate() {
+	if (this.getManaPoints() < this.vMaxMana) {
+		this.changeMana(vManaRegeneration);
+		this.changeHealth(vHealthRegeneration);
+	}
+}
+
 function shootFireBallIfPossible() {
-	if ((vTimerkugel > 10) and (vManaPoints >= 20)) {
-		var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b++;
+	if ((vTimerkugel > vFireBallWaitFrames) and (this.getManaPoints() >= vFireBallManaCost)) {
+		var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b += 1;
 		duplicateMovieClip(_root.world.kugel, "kugel"+nextKugelNumber, nextKugelNumber);
 		var currentKugel:MovieClip = _root.world["kugel"+nextKugelNumber]
-		this.vStats.Mana -= 20;
+		this.spendMana(vFireBallManaCost);
 		vTimerkugel = 0;	
 	}
 }
@@ -142,7 +170,7 @@ function calculateNewSpeed() {
 			 // _root["key_left"] ist das Gleiche wie _root.key_left
 			vCurrentDirection = direction;
 			if (speed_change.x) {
-				// Die Funktion ist innerhalb von this.onEnterFrame und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
+				// Die Funktion ist innerhalb von calculateNewSpeed und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
 				newSpeed.x = speed_change.x;
 			}
 			if (speed_change.y) {
@@ -161,32 +189,29 @@ function calculateNewSpeed() {
 	return newSpeed;
 }
 
-function updateResourceBar(theBar:MovieClip, currentValue:Number, regen:Number) {
-	if (currentValue== 100) {
+function updateResourceBar(theBar:MovieClip, currentValue:Number, maxValue:Number) {
+	if (currentValue == maxValue) {
 		theBar.gotoAndStop("hundert");
-	} else if (currentValue>= 90) {
+	} else if (currentValue >= maxValue/10*9) {
 		theBar.gotoAndStop("neun");
-	} else if (currentValue>= 80) {
+	} else if (currentValue >= maxValue/10*8) {
 		theBar.gotoAndStop("acht");
-	} else if (currentValue>= 70) {
+	} else if (currentValue >= maxValue/10*7) {
 		theBar.gotoAndStop("sieben");
-	} else if (currentValue>= 60) {
+	} else if (currentValue >= maxValue/10*6) {
 		theBar.gotoAndStop("sechs");
-	} else if (currentValue>= 50) {
+	} else if (currentValue >= maxValue/10*5) {
 		theBar.gotoAndStop("fuenf");
-	} else if (currentValue>= 40) {
+	} else if (currentValue >= maxValue/10*4) {
 		theBar.gotoAndStop("vier");
-	} else if (currentValue>= 30) {
+	} else if (currentValue >= maxValue/10*3) {
 		theBar.gotoAndStop("drei");
-	} else if (currentValue>= 20) {
+	} else if (currentValue >= maxValue/10*2) {
 		theBar.gotoAndStop("zwei");
-	} else if (currentValue>= 10) {
+	} else if (currentValue >= maxValue/10*1) {
 		theBar.gotoAndStop("eins");
-	} else if (currentValue>= 0) {
+	} else if (currentValue >= 0) {
 		theBar.gotoAndStop("null");
-	}
-	if (currentValue < 100)  {
-		currentValue += regen;
 	}
 }
 
