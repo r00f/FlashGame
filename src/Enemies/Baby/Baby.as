@@ -4,7 +4,6 @@ action = "idle"
 var HP = 100;
 
 
-
 x_fix = int(this._x);
 y_fix = int(this._y);
 

@@ -11,6 +11,16 @@ var vManaPoints:Number = 100;
 var vTimerkugel = 0;
 var vManaBar:MovieClip = _root.interf.mana_bar
 var vHealthBar:MovieClip = _root.interf.HP_bar
+var vHealthRegeneration:Number = 0;
+var vManaRegeneration:Number = 0.5;
+
+var xnext = 0;
+var ynext = 0;
+
+var vStats = {
+	Mana: 100,
+	Health: 100
+}
 
 var kugelSpeed = {x: 0, y: 0}
 
@@ -31,7 +41,20 @@ function getYPosition() {
 }
 
 function getHealthPoints() {
-	return vHP;
+	return this.vStats.Health;
+}
+
+function getManaPoints() {
+	return this.vStats.Mana;
+}
+
+function hit(damage:Number) {
+	this.vStats.Health -= damage;
+}
+
+function knockback(xDistance:Number, yDistance:Number) {
+	x_next += xDistance;
+	y_next += yDistance;
 }
 
 //wall sichtbar/nicht sichtbar
@@ -49,32 +72,132 @@ var cam_y = int(_parent._y);
 this.onEnterFrame = function()
 {
 	// Nun die x- und y-Geschwindigkeiten der Spielfigur zurücksetzen
+	if (_root.key_strg) {
+		this.shootFireBallIfPossible()
+	}
+	
+	// nur alle 10 frames abschuss der Kugel möglich
+	vTimerkugel++;
+
+	
+	move()
+	
+	if (_root.key_space == 1)
+	{
+		vAction = "hit";
+		idle = 0
+	}
+	
+	if (idle)
+	{
+		vAction = "idle";
+	}
+	if (_root.key_left or _root.key_right or _root.key_up or _root.key_down)
+	{
+		vAction = "walk";
+	}
+
+	if (this.getHealthPoints() <= 0)
+	{
+		vAction = "death";
+	}
+	
+	if (vSword = true)
+	{
+		vWeapon = "sword";
+	}
+
+	//animationsname definieren 
+	var anim = vAction + "_" + vCurrentDirection + "_" + vWeapon;
+	animations.gotoAndStop(anim);
+
+	this.swapDepths(int(this._y));
+	//HP-Balken
+	updateResourceBar(this.vHealthBar, this.vStats.Health, this.vHealthRegeneration);
+	//vManaPoints-Balken
+	updateResourceBar(this.vManaBar, this.vStats.Mana, this.vManaRegeneration);
+	
+	
+};
+
+function shootFireBallIfPossible() {
+	if ((vTimerkugel > 10) and (vManaPoints >= 20)) {
+		var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b++;
+		duplicateMovieClip(_root.world.kugel, "kugel"+nextKugelNumber, nextKugelNumber);
+		var currentKugel:MovieClip = _root.world["kugel"+nextKugelNumber]
+		this.vStats.Mana -= 20;
+		vTimerkugel = 0;	
+	}
+}
+
+
+function calculateNewSpeed() {
+	var newSpeed = {
+		x: 0,
+		y: 0
+	};
+
+	function adjustNewSpeedForDirection(direction, speed_change) {
+		if (_root["key_"+direction] == 1) {
+			 // _root["key_left"] ist das Gleiche wie _root.key_left
+			vCurrentDirection = direction;
+			if (speed_change.x) {
+				// Die Funktion ist innerhalb von this.onEnterFrame und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
+				newSpeed.x = speed_change.x;
+			}
+			if (speed_change.y) {
+				newSpeed.y = speed_change.y;
+			}
+		} else {
+			idle = 1;
+		}
+	}
+	
+	// Mapping von richtung zu geschwindigkeit (left => x = -speed, usw)
+	adjustNewSpeedForDirection(Directions.left, {x: -speed});
+	adjustNewSpeedForDirection(Directions.right, {x: speed});
+	adjustNewSpeedForDirection(Directions.up, {y: -speed});
+	adjustNewSpeedForDirection(Directions.down, {y: speed});
+	return newSpeed;
+}
+
+function updateResourceBar(theBar:MovieClip, currentValue:Number, regen:Number) {
+	if (currentValue== 100) {
+		theBar.gotoAndStop("hundert");
+	} else if (currentValue>= 90) {
+		theBar.gotoAndStop("neun");
+	} else if (currentValue>= 80) {
+		theBar.gotoAndStop("acht");
+	} else if (currentValue>= 70) {
+		theBar.gotoAndStop("sieben");
+	} else if (currentValue>= 60) {
+		theBar.gotoAndStop("sechs");
+	} else if (currentValue>= 50) {
+		theBar.gotoAndStop("fuenf");
+	} else if (currentValue>= 40) {
+		theBar.gotoAndStop("vier");
+	} else if (currentValue>= 30) {
+		theBar.gotoAndStop("drei");
+	} else if (currentValue>= 20) {
+		theBar.gotoAndStop("zwei");
+	} else if (currentValue>= 10) {
+		theBar.gotoAndStop("eins");
+	} else if (currentValue>= 0) {
+		theBar.gotoAndStop("null");
+	}
+	if (currentValue < 100)  {
+		currentValue += regen;
+	}
+}
+
+
+function move() {
 	var xspeed = 0;
 	var yspeed = 0;
 
 	var newSpeed = calculateNewSpeed();
 	xspeed = newSpeed.x;
 	yspeed = newSpeed.y;
-
-	
-	if (_root.key_strg) {
-		if ((vTimerkugel > 10) and (vManaPoints >= 20)) {
-
-			var nextKugelNumber = _root.vNokugel++; // var a = b++ bedeutet a = b; b++;
-			duplicateMovieClip(_root.world.kugel, "kugel"+nextKugelNumber, nextKugelNumber);
-			var currentKugel:MovieClip = _root.world["kugel"+nextKugelNumber]
-			vManaPoints -= 20;
-			vTimerkugel = 0;
-			
-			
-		}
-		
-
-	}
-	// nur alle 10 frames abschuss der Kugel möglich
-	vTimerkugel++;
-
-	
 	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken: 
 	var x_now = int(this._x);
 	var y_now = int(this._y);
@@ -180,8 +303,6 @@ this.onEnterFrame = function()
 	this._x = x_next;
 	this._y = y_next;
 	
-	//this._x = next_coordinates.x;
-	//this._y = next_coordinates.y;
 	// "Kamera" mitbewegen - sprich: Umgebung gegenläufig zur Bewegung der Spielfigur bewegen
 	// Weiches Scrolling:
 	// Zuerst Zielposition für die Kamera ermitteln
@@ -194,101 +315,4 @@ this.onEnterFrame = function()
 	// ( "int" scheidet einfach die Nachkommastellen ab )
 	_parent._x = int(cam_x);
 	_parent._y = int(cam_y);
-	
-	if (_root.key_space == 1)
-	{
-		vAction = "hit";
-		idle = 0
-	}
-	
-	if (idle)
-	{
-		vAction = "idle";
-	}
-	if (_root.key_left or _root.key_right or _root.key_up or _root.key_down)
-	{
-		vAction = "walk";
-	}
-
-	if (this.getHealthPoints() <= 0)
-	{
-		vAction = "death";
-	}
-	
-	if (vSword = true)
-	{
-		vWeapon = "sword";
-	}
-
-	//animationsname definieren 
-	anim = vAction + "_" + vCurrentDirection + "_" + vWeapon;
-	animations.gotoAndStop(anim);
-
-	this.swapDepths(int(this._y));
-	//HP-Balken
-	updateResourceBar(this.vHealthBar, this.getHealthPoints(), 0);
-	//vManaPoints-Balken
-	updateResourceBar(this.vManaBar, vManaPoints, 0.5);
-	
-	
-};
-
-
-function calculateNewSpeed() {
-	var newSpeed = {
-		x: 0,
-		y: 0
-	};
-
-	function adjustNewSpeedForDirection(direction, speed_change) {
-		if (_root["key_"+direction] == 1) {
-			 // _root["key_left"] ist das Gleiche wie _root.key_left
-			vCurrentDirection = direction;
-			if (speed_change.x) {
-				// Die Funktion ist innerhalb von this.onEnterFrame und nach der Definition von newSpeed definiert, darum kann man von hier auf newSpeed zugreifen
-				newSpeed.x = speed_change.x;
-			}
-			if (speed_change.y) {
-				newSpeed.y = speed_change.y;
-			}
-		} else {
-			idle = 1;
-		}
-	}
-	
-	// Mapping von richtung zu geschwindigkeit (left => x = -speed, usw)
-	adjustNewSpeedForDirection(Directions.left, {x: -speed});
-	adjustNewSpeedForDirection(Directions.right, {x: speed});
-	adjustNewSpeedForDirection(Directions.up, {y: -speed});
-	adjustNewSpeedForDirection(Directions.down, {y: speed});
-	return newSpeed;
-}
-
-function updateResourceBar(theBar:MovieClip, currentValue:Number, regen:Number) {
-	if (currentValue== 100) {
-		theBar.gotoAndStop("hundert");
-	} else if (currentValue>= 90) {
-		theBar.gotoAndStop("neun");
-	} else if (currentValue>= 80) {
-		theBar.gotoAndStop("acht");
-	} else if (currentValue>= 70) {
-		theBar.gotoAndStop("sieben");
-	} else if (currentValue>= 60) {
-		theBar.gotoAndStop("sechs");
-	} else if (currentValue>= 50) {
-		theBar.gotoAndStop("fuenf");
-	} else if (currentValue>= 40) {
-		theBar.gotoAndStop("vier");
-	} else if (currentValue>= 30) {
-		theBar.gotoAndStop("drei");
-	} else if (currentValue>= 20) {
-		theBar.gotoAndStop("zwei");
-	} else if (currentValue>= 10) {
-		theBar.gotoAndStop("eins");
-	} else if (currentValue>= 0) {
-		theBar.gotoAndStop("null");
-	}
-	if (currentValue < 100)  {
-		currentValue += regen;
-	}
 }
