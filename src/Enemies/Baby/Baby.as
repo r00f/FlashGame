@@ -63,7 +63,7 @@ yspeed = 0;
 	}
 	
 	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken:
-	calculateNextPosition(xspeed, yspeed)
+	calculateNextPosition(xspeed, yspeed) // Movement.as
 
 	if (idle) {
 		action = "idle_";

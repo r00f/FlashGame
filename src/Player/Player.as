@@ -109,18 +109,6 @@ function knockback(xDistance:Number, yDistance:Number) {
 	y_next += yDistance;
 }
 
-
-// Helper Functions
-
-function changeMana(change) {
-	this.vManaPoints += change;
-}
-
-function changeHealth(change) {
-	this.vHealthPoints += change;	
-}
-
-
 this.onEnterFrame = function()
 {
 	handleFireball();
@@ -128,15 +116,14 @@ this.onEnterFrame = function()
 	move();
 	
 	animate();
-	
-	this.swapDepths(int(this._y));
 
 	updateResourceBar(this.vHealthBar, this.getHealthPercentage());
 
 	updateResourceBar(this.vManaBar, this.getManaPercentage());
 	
 	this.regenerate()
-	
+
+	this.swapDepths(int(this._y));
 }
 
 function handleFireball() {
@@ -157,67 +144,13 @@ function shootFireBallIfPossible() {
 	}
 }
 
-function regenerate() {
-	if (this.getManaPoints() < this.vMaxMana) {
-		this.changeMana(vManaRegeneration);
-		this.changeHealth(vHealthRegeneration);
-	}
+function move() {
+
+	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken: 
+	var newSpeed = calculateNewSpeed();
+	calculateNextPosition(newSpeed.x,newSpeed.y); // Movement.as
+	moveCamera();
 }
-
-
-
-function animate() {
-	if (_root.key_space == 1) {
-		this.vAction = "hit";
-		this.idle = 0
-	}
-	if (this.idle) {
-		this.vAction = "idle";
-	}
-	if (_root.key_left or _root.key_right or _root.key_up or _root.key_down) {
-		this.vAction = "walk";
-	}
-	if (this.getHealthPoints() <= 0) {
-		this.vAction = "death";
-	}
-	if (this.vSword = true) {
-		this.vWeapon = "sword";
-	}
-
-	//animationsname definieren 
-	var anim = this.vAction + "_" + this.vCurrentDirection + "_" + this.vWeapon;
-	animations.gotoAndStop(anim);
-}
-
-
-function updateResourceBar(theBar:MovieClip, percent:Number) {
-	if (percent >= 0.999) {
-		theBar.gotoAndStop("hundert");
-	} else if (percent >= 0.9) {
-		theBar.gotoAndStop("neun");
-	} else if (percent >= 0.8) {
-		theBar.gotoAndStop("acht");
-	} else if (percent >= 0.7) {
-		theBar.gotoAndStop("sieben");
-	} else if (percent >= 0.6) {
-		theBar.gotoAndStop("sechs");
-	} else if (percent >= 0.5) {
-		theBar.gotoAndStop("fuenf");
-	} else if (percent >= 0.4) {
-		theBar.gotoAndStop("vier");
-	} else if (percent >= 0.3) {
-		theBar.gotoAndStop("drei");
-	} else if (percent >= 0.2) {
-		theBar.gotoAndStop("zwei");
-	} else if (percent >= 0.1) {
-		theBar.gotoAndStop("eins");
-	} else if (percent >= 0) {
-		theBar.gotoAndStop("null");
-	}
-}
-
-
-/* Moving */
 
 function calculateNewSpeed() {
 	var newSpeed = {
@@ -247,14 +180,6 @@ function isDirectionKeyPressed(direction) {
 	return _root["key_"+direction] == 1;
 }
 
-function move() {
-
-	// Bevor die Kollisionsabfrage loslegt, sollte man sich zunächst die aktuelle Position merken: 
-	var newSpeed = calculateNewSpeed();
-	calculateNextPosition(newSpeed.x,newSpeed.y);
-	moveCamera();
-}
-
 function moveCamera() {
 	// "Kamera" mitbewegen - sprich: Umgebung gegenläufig zur Bewegung der Spielfigur bewegen
 	// Weiches Scrolling:
@@ -268,4 +193,70 @@ function moveCamera() {
 	// ( "int" scheidet einfach die Nachkommastellen ab )
 	_parent._x = int(cam_x);
 	_parent._y = int(cam_y);
+}
+
+function animate() {
+	if (_root.key_space == 1) {
+		this.vAction = "hit";
+		this.idle = 0
+	}
+	if (this.idle) {
+		this.vAction = "idle";
+	}
+	if (_root.key_left or _root.key_right or _root.key_up or _root.key_down) {
+		this.vAction = "walk";
+	}
+	if (this.getHealthPoints() <= 0) {
+		this.vAction = "death";
+	}
+	if (this.vSword = true) {
+		this.vWeapon = "sword";
+	}
+
+	//animationsname definieren 
+	var anim = this.vAction + "_" + this.vCurrentDirection + "_" + this.vWeapon;
+	animations.gotoAndStop(anim);
+}
+
+function updateResourceBar(theBar:MovieClip, percent:Number) {
+	if (percent >= 0.999) {
+		theBar.gotoAndStop("hundert");
+	} else if (percent >= 0.9) {
+		theBar.gotoAndStop("neun");
+	} else if (percent >= 0.8) {
+		theBar.gotoAndStop("acht");
+	} else if (percent >= 0.7) {
+		theBar.gotoAndStop("sieben");
+	} else if (percent >= 0.6) {
+		theBar.gotoAndStop("sechs");
+	} else if (percent >= 0.5) {
+		theBar.gotoAndStop("fuenf");
+	} else if (percent >= 0.4) {
+		theBar.gotoAndStop("vier");
+	} else if (percent >= 0.3) {
+		theBar.gotoAndStop("drei");
+	} else if (percent >= 0.2) {
+		theBar.gotoAndStop("zwei");
+	} else if (percent >= 0.1) {
+		theBar.gotoAndStop("eins");
+	} else if (percent >= 0) {
+		theBar.gotoAndStop("null");
+	}
+}
+
+function regenerate() {
+	if (this.getManaPoints() < this.vMaxMana) {
+		this.changeMana(vManaRegeneration);
+		this.changeHealth(vHealthRegeneration);
+	}
+}
+
+// Helper Functions
+
+function changeMana(change) {
+	this.vManaPoints += change;
+}
+
+function changeHealth(change) {
+	this.vHealthPoints += change;	
 }
