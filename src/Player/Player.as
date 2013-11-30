@@ -150,27 +150,33 @@ function move() {
 }
 
 function calculateNewSpeed() {
-	var newSpeed = {
-		x: 0,
-		y: 0
-	};
+
+	var xSpeedMultiplier = 0;
+	var ySpeedMultiplier = 0;
 	if (isDirectionKeyPressed(Directions.left)) {
-		newSpeed.x = -speed;
+		xSpeedMultiplier = -1;
 		this.vCurrentDirection = Directions.left
 	}
 	if (isDirectionKeyPressed(Directions.right)) {
-		newSpeed.x = speed;
+		xSpeedMultiplier = 1;
 		this.vCurrentDirection = Directions.right
 	}
 	if (isDirectionKeyPressed(Directions.up)) {
-		newSpeed.y = -speed;
+		ySpeedMultiplier = -1;
 		this.vCurrentDirection = Directions.up
 	}
 	if (isDirectionKeyPressed(Directions.down)) {
-		newSpeed.y = speed;
+		ySpeedMultiplier = 1;
 		this.vCurrentDirection = Directions.down
 	}
-	return newSpeed;
+	if (xSpeedMultiplier != 0 and ySpeedMultiplier != 0) {
+		ySpeedMultiplier /= Math.sqrt(2);
+		xSpeedMultiplier /= Math.sqrt(2);
+	} 
+	return {
+		x: xSpeedMultiplier * speed,
+		y: ySpeedMultiplier * speed
+	};
 }
 
 function isDirectionKeyPressed(direction) {
