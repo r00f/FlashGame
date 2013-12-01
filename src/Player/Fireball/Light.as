@@ -1,21 +1,41 @@
-﻿stop();
+﻿#include "src/Utilities/Constants.as"
+#include "src/Utilities/Utilities.as"
+stop();
 
 this.blendMode = "alpha"
+// "private" variables
+var vPlayer:MovieClip = _root.world.player;
+var vKugelSpeedX:Number = 0;
+var vKugelSpeedY:Number = 0;
+var vIsExploding:Boolean = false;
+
+var vIsExploded = false;
+this._x = this.vPlayer.getXPosition() + FireballXOffset;
+this._y = this.vPlayer.getYPosition() + FireballYOffset;
+
 vTimerkugel = 0;
-xKugelspeed = _root.xKugelspeed;
-yKugelspeed = _root.yKugelspeed;
+this.setupDirection(FireballSpeed) // Utilities.as
 
-this.onEnterFrame = function()
+// "public" functions
 
-{
-	this._x += xKugelspeed;
-	this._y += yKugelspeed;
-			
+function explode() {
+	this.vIsExploding = true;
+}
 
-	// nach 20 frames verschwindet die Kugel
+
+this.onEnterFrame = function() {
+	if (!this.vIsExploding) {
+		this._x += this.vKugelSpeedX;
+		this._y += this.vKugelSpeedY;
+	} else if (!this.vIsExploded){
+		this.vKugelSpeedY = 0;
+		this.vKugelSpeedX = 0;
+		gotoAndPlay("explode");
+		
+		this.vIsExploded = true;
+	}
 	vTimerkugel += 1;
 	if (vTimerkugel == 50) {
 		this.removeMovieClip();
 	}
-	
 }

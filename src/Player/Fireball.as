@@ -1,39 +1,37 @@
-﻿stop();
-
-//_root.vNospelllight += 1;
-vLight = "";
-xKugelspeed = _root.xKugelspeed;
-yKugelspeed = _root.yKugelspeed;
-vTimer = 0;
-vNumber = _root.vNokugel
-//vLightNumber = _root.vNospelllight;
+﻿#include "src/Utilities/Constants.as"
+#include "src/Utilities/Utilities.as"
+stop();
 
 
-	if (_root.world.player.dir == "right_")
-	{
-		gotoAndStop("right");
+/*  "private" variables   */
+var vPlayer:MovieClip = _root.world.player;
+var vKugelSpeedX:Number = 0;
+var vKugelSpeedY:Number = 0;
 
-	}
-	
-	if (_root.world.player.dir == "left_")
-	{
-		gotoAndStop("left");
+var vOriginalFireballLight:MovieClip = _root.world.darkness.fireball_light;
+var vNumber = _root.vNokugel;
+var vFireballLightName:String = "fireball_light" + vNumber;
 
-	}
-	
-		if (_root.world.player.dir == "up_")
-	{
-		gotoAndStop("up");
+var vIsExploding = false;
+var vIsExploded = false;
 
-
-	}
-	
-		if (_root.world.player.dir == "down_")
-	{
-		gotoAndStop("down");
+var vLight;
+var vTimer = 0;
 
 
-	}
+/* "public" functions   */
+
+/* SETUP */
+if (vNumber > 0) {
+	this.setupDirection(FireballSpeed) // Utilities.as
+
+	this._x = this.vPlayer.getXPosition() + FireballXOffset;
+	this._y = this.vPlayer.getYPosition() + FireballYOffset;
+
+	// Set Direction to the same the player is facing
+	gotoAndStop(this.vPlayer.getDirection());
+}
+
 
 function hittest() {
 	for (var i = 0; i < _root.vWalls.length; i++) {
@@ -47,48 +45,37 @@ function hittest() {
 
 this.onEnterFrame = function()
 {
-	if (vLight == "") {
-		duplicateMovieClip(_root.world.darkness.fireball_light, "fireball_light"+vNumber, vNumber);
-		vLight = _root.world.darkness["fireball_light"+vNumber];
-		vLight._x =   _root.world.player._x;
-		vLight._y =  (_root.world.player._y)-25;
-	}
-	
-	if (hittest()) {
-		//vLight.removeMovieClip()
-		gotoAndStop("explode");
-		vLight.gotoAndPlay("explode");
-		//_root.world.darkness.fireball_light.gotoAndPlay("explode");
-		xKugelspeed = 0;
-		yKugelspeed = 0;
-	}	
-	
-	this._x += xKugelspeed;
-	this._y += yKugelspeed;
-	
-	for (i=1; i<=10; i++) {
-		if (this.hitTest(_parent["gegner"+i])) {
-			_parent["gegner"+i]._xscale-=20;
-			_root.vPoints += 50;
-		}
-			
+	if (!vLight && this.vNumber > 0) {
+		duplicateMovieClip(this.vOriginalFireballLight, this.vFireballLightName, this.vNumber);
+		vLight = _root.world.darkness[vFireballLightName];
 
-	// nach 20 frames verschwindet die Kugel
+	}
+
+	if (!this.vIsExploding) {
+		
+		if (hittest()) {
+			this.vIsExploding = true;
+		}	
+		
+		this._x += this.vKugelSpeedX;
+		this._y += this.vKugelSpeedY;
+		
+		for (i=1; i<=10; i++) {
+			if (this.hitTest(_parent["gegner"+i])) {
+				_parent["gegner"+i]._xscale-=20;
+				_root.vPoints += 50;
+			}
+		}
+	} else if (!this.vIsExploded) {
+		gotoAndStop("explode");
+		this.vLight.explode();
+		this.vKugelSpeedX = 0;
+		this.vKugelSpeedY = 0;
+		this.vIsExploded = true;
+	}
+	this.swapDepths(int(this._y));
 	vTimer += 1;
 	if (vTimer == 50) {
 		this.removeMovieClip();
 	}
-	
-	
-	//_root.world.darkness["fireball_light"+_root.vNospelllight]._x =  _root.world.player._x;
-	//_root.world.darkness["fireball_light"+_root.vNospelllight]._y = (_root.world.player._y)-25;
-	
-
-		
-	this.swapDepths(int(this._y));
-	
-
-	}
-	
 }
-
