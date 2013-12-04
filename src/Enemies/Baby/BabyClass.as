@@ -5,32 +5,37 @@ import src.States.Baby.AttackingState
 import src.Utilities.Coordinate;
 import src.Utilities.Directions;
 
-
-
-class src.Enemies.Baby.BabyClass extends StateMachine {
+class src.Enemies.Baby.BabyClass {
 	private var baby:MovieClip;
 
+	// State Machine
+
+	private var stateMachine:StateMachine;
+
+	// State Names
 	private var wait:String = "Wait";
 	private var walk:String = "Walk"
 	private var attack:String = "Attack"
+
+	// needed variables to control the states
 	private var waitWhile:Number;
 	private var damage:Number;
 	private var knockback:Number;
 	private var currentAnimationName:String;
-	private var currentDirection:String;
+	private var currentDirection:String = Directions.right;
 
 	public function BabyClass(baby) {
-
+		this.stateMachine = new StateMachine(),
 		this.baby = baby;
 		this.waitWhile = random(24);
 
 		// Register all the States
-		this.RegisterState(this.wait, new WaitingState(this));
-		this.RegisterState(this.walk, new WalkingState(this));
-		this.RegisterState(this.attack, new AttackingState(this));
+		this.stateMachine.RegisterState(this.wait, new WaitingState(this));
+		this.stateMachine.RegisterState(this.walk, new WalkingState(this));
+		this.stateMachine.RegisterState(this.attack, new AttackingState(this));
 
 		// Start by waiting
-		this.EnterState(wait);
+		this.stateMachine.EnterState(wait);
 	}
 
 
@@ -42,17 +47,17 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 		if (this.waitWhile == 0) {
 			this.waitWhile--;
 			// If we stopped waiting start walking
-			this.EnterState(walk);
+			this.stateMachine.EnterState(walk);
 		} else if (this.waitWhile > 0) {
 			this.waitWhile--
 		}
 		// Always call super.onEnterFrame() to trigger the state machine.
-		super.onEnterFrame()
+		this.stateMachine.onEnterFrame()
 	}
 
 
 	public function doAttack() {
-		this.EnterState(attack)
+		this.stateMachine.EnterState(attack)
 	}
 
 	public function getDamage() {

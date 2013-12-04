@@ -11,9 +11,7 @@ class  src.States.Baby.WalkingState implements State {
 	private var ySpeed:Number;
 
 	private var actionName:String = "baby_walk";
-
-
-
+	
 	private var currentDirection:String;
 
 	private var fixCoordinate:Coordinate;
@@ -41,7 +39,6 @@ class  src.States.Baby.WalkingState implements State {
 		this.baby.setKnockback(50);
 		this.fixCoordinate = this.baby.getCoordinates();
  	}
-
 
     public function Exit():Void {
     	// Nothing todo when exiting, baby can transition into a different state at any time during walking
