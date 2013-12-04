@@ -1,6 +1,8 @@
 ﻿#include "src/Utilities/Constants.as"
 #include "src/Utilities/Movement.as"
 
+import src.Enemies.Baby.BabyClass;
+
 /* "Documentation" 
 	
 	Baby
@@ -10,6 +12,11 @@
 		- getKnockback() : Returns the knoback its attack does
 
 */
+
+
+var baby = new BabyClass(this);
+/*
+var states:Object;
 
 var vHit = false;
 var vAction;
@@ -47,10 +54,11 @@ var vWait = random(24);
 
 var x_next;
 var y_next;
-
+*/
 // In jedem Bild wiederkehrend ausgeführter Scriptteil:
 this.onEnterFrame = function() {
-	
+	baby.onEnterFrame();
+	/*
 	if (vWait > 0) {
 		vWait = vWait - 1;
 		return;
@@ -91,6 +99,6 @@ this.onEnterFrame = function() {
 	}
 
 	animations.gotoAndStop(this.vAction+this.vDirection);
-	this.swapDepths(int(this._y));
+	this.swapDepths(int(this._y));*/
 };
 
