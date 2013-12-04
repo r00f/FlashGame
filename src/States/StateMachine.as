@@ -1,12 +1,16 @@
 import src.States.State;
 class src.States.StateMachine {
-	private var states:Object = new Object();
+	private var states:Object;
 
 	private var activeState:State; 
 	private var nextState:String;
 
+
+	public function StateMachine() { 
+		this.states = new Object()
+	}
+
 	public function RegisterState(name:String, state:State) {
-		 ("Registered State:" + name + ": " + state);
 		this.states[name] = state;
 	}
 
