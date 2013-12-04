@@ -10,11 +10,11 @@ class  src.States.Baby.WalkingState implements State {
 	private var xSpeed:Number;
 	private var ySpeed:Number;
 
-	private var actionName:String = "baby_walk_";
+	private var actionName:String = "baby_walk";
 
 
 
-	private var currentDirection:String = Directions.left
+	private var currentDirection:String = Directions.right;
 
 	private var fixCoordinate:Coordinate;
 
@@ -67,11 +67,11 @@ class  src.States.Baby.WalkingState implements State {
 			this.ySpeed = this.baseSpeed;
 			this.currentDirection =  Directions.down;
 		}
-
+		baby.setDirection(this.currentDirection);
 		this.baby.setCoordinates(new Coordinate(coords.x + this.xSpeed, coords.y + this.ySpeed));
 
 
-		this.baby.setAnimation(this.actionName+this.currentDirection)
+		this.baby.setAnimation(this.actionName)
 
     }
 

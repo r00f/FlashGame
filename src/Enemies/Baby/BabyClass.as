@@ -1,6 +1,7 @@
 import src.States.StateMachine;
 import src.States.Baby.WaitingState
 import src.States.Baby.WalkingState
+import src.States.Baby.AttackingState
 import src.Utilities.Coordinate;
 import src.Utilities.Directions;
 
@@ -11,10 +12,12 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 
 	private var wait:String = "Wait";
 	private var walk:String = "Walk"
+	private var attack:String = "Attack"
 	private var waitWhile:Number;
 	private var damage:Number;
 	private var knockback:Number;
 	private var currentAnimationName:String;
+	private var currentDirection:String;
 
 	public function BabyClass(baby) {
 		trace("Baby Class initialized")
@@ -24,6 +27,7 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 
 		this.RegisterState(this.wait, new WaitingState(this));
 		this.RegisterState(this.walk, new WalkingState(this));
+		this.RegisterState(this.attack, new AttackingState(this));
 		this.EnterState(wait);
 	}
 
@@ -44,7 +48,7 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 
 
 	public function doAttack() {
-		//this.vHit = true;
+		this.EnterState(attack)
 	}
 
 	public function getDamage() {
@@ -53,6 +57,14 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 
 	public function setDamage(damage:Number) {
 		this.damage = damage;
+	}
+
+	public function getDirection() {
+		return this.currentDirection;
+	}
+
+	public function setDirection(newDirection:String) {
+		this.currentDirection = newDirection;
 	}
 
 	public function getKnockback() {
@@ -78,6 +90,6 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 	}
 
 	private function animate() {
-		this.baby.animations.gotoAndStop(this.currentAnimationName);
+		this.baby.animations.gotoAndStop(this.currentAnimationName + "_" +this.currentDirection);
 	}
 }

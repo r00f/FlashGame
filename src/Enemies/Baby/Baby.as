@@ -15,6 +15,25 @@ import src.Utilities.Directions;
 */
 
 var baby = new BabyClass(this);
+
+function doAttack() {
+	baby.doAttack()
+}
+
+function getDirection() {
+	return baby.getDirection();
+}
+
+function getDamage() {
+	return  baby.getDamage();
+}
+function getKnockback() {
+	return  baby.getKnockback();
+}
+this.onEnterFrame = function() {
+	baby.onEnterFrame();
+}
+
 //trace(baby.test());
 /*
 var states:Object;
