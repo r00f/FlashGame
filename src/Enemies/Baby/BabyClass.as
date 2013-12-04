@@ -20,7 +20,7 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 	private var currentDirection:String;
 
 	public function BabyClass(baby) {
-		trace("Baby Class initialized")
+
 		this.baby = baby;
 		this.waitWhile = random(24);
 
@@ -33,12 +33,12 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 
 
 	public function onEnterFrame() {
-		trace("BabyClass onEnterFrame")
+
 		this.baby.swapDepths(int(this.baby._y));
 		animate();
 		if (this.waitWhile == 0) {
 			this.waitWhile = -10;
-			trace("Waiting finished");
+
 			this.EnterState(walk);
 		} else if (this.waitWhile > 0) {
 			this.waitWhile--
@@ -84,7 +84,7 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 
 
 	public function setCoordinates(nextCoordinates) {
-		trace("Baby setCoordinates"  + nextCoordinates.x)
+
 		this.baby._x = nextCoordinates.x;
 		this.baby._y = nextCoordinates.y;
 	}

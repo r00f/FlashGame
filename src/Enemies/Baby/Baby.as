@@ -34,7 +34,7 @@ this.onEnterFrame = function() {
 	baby.onEnterFrame();
 }
 
-//trace(baby.test());
+
 /*
 var states:Object;
 

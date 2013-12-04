@@ -27,33 +27,33 @@ class  src.States.Baby.WalkingState implements State {
 	}
 
 	 public function Enter():Void {
-	 	trace("Walking Enter");
+
 		this.baseSpeed = random(6)+2;
 		this.xSpeed = this.baseSpeed;
 		this.ySpeed = 0;
 		this.baby.setDamage(1/this.xSpeed * 100);
 		this.baby.setKnockback(50);
 		this.fixCoordinate = this.baby.getCoordinates();
-		trace("this.fixCoordinate"+this.fixCoordinate.x)
+
 
 	 	}
     public function Exit():Void {
-    	trace("Walking Exit");
+
 
     }
     public function onEnterFrame():Void {
-    	trace("Walking");
+
     	var coords = this.baby.getCoordinates()
 
     	
     	if (coords.x < this.fixCoordinate.x - this.horizontalLimit) {
-    		trace("Moving right: " + coords.x + ":  this.fixCoordinate.x - this.horizontalLimit:" + (this.fixCoordinate.x - this.horizontalLimit));
+
 			this.xSpeed = this.baseSpeed;
 			this.currentDirection = Directions.right;
 		}    	
 		if (coords.x > (this.fixCoordinate.x + this.horizontalLimit)) {
 
-    		trace("Moving left: " + coords.x + ": this.fixCoordinate.x + this.horizontalLimit:" + (this.fixCoordinate.x + this.horizontalLimit));
+
 			this.xSpeed = -this.baseSpeed;
 			this.currentDirection =  Directions.left;
 		}

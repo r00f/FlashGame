@@ -11,16 +11,16 @@ class   src.States.Baby.AttackingState implements State {
     }
 
 	 public function Enter():Void {
-	 	trace("Attacking Enter");
+
         this.baby.setAnimation("hit")
 
 	 	}
     public function Exit():Void {
-    	trace("Attacking Exit");
+
 
     }
     public function onEnterFrame():Void {
-    	trace("Attacking");
+
 
     }
 
