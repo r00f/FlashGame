@@ -34,6 +34,7 @@ class  src.States.Baby.WalkingState implements State {
 		this.baby.setDamage(1/this.xSpeed * 100);
 		this.baby.setKnockback(50);
 		this.fixCoordinate = this.baby.getCoordinates();
+		trace("this.fixCoordinate"+this.fixCoordinate.x)
 
 	 	}
     public function Exit():Void {
@@ -43,30 +44,31 @@ class  src.States.Baby.WalkingState implements State {
     public function onEnterFrame():Void {
     	trace("Walking");
     	var coords = this.baby.getCoordinates()
-    	var vXSpeed = 0;
-    	var vYSpeed = 0;
-    	if (coords.x < (this.fixCoordinate.x - this.horizontalLimit)) {
-			vXSpeed = this.xSpeed;
+
+    	
+    	if (coords.x < this.fixCoordinate.x - this.horizontalLimit) {
+    		trace("Moving right: " + coords.x + ":  this.fixCoordinate.x - this.horizontalLimit:" + (this.fixCoordinate.x - this.horizontalLimit));
+			this.xSpeed = this.baseSpeed;
 			this.currentDirection = Directions.right;
-		}
+		}    	
 		if (coords.x > (this.fixCoordinate.x + this.horizontalLimit)) {
 
-			vXSpeed = -this.xSpeed;
+    		trace("Moving left: " + coords.x + ": this.fixCoordinate.x + this.horizontalLimit:" + (this.fixCoordinate.x + this.horizontalLimit));
+			this.xSpeed = -this.baseSpeed;
 			this.currentDirection =  Directions.left;
 		}
 		
 		if (coords.y > (this.fixCoordinate.y + this.verticalLimit)) {
-			vYSpeed = -this.ySpeed;
+			this.ySpeed = -this.baseSpeed;
 			this.currentDirection =  Directions.up;
 		}
 		
 		if (coords.y < (this.fixCoordinate.y - this.verticalLimit)) {
-			vYSpeed = this.ySpeed;
+			this.ySpeed = this.baseSpeed;
 			this.currentDirection =  Directions.down;
 		}
-		//calculateNextPosition(vXSpeed, vYSpeed) // Movement.as
 
-		this.baby.setCoordinates(new Coordinate(coords.x+vXSpeed, coords.y + vYSpeed));
+		this.baby.setCoordinates(new Coordinate(coords.x + this.xSpeed, coords.y + this.ySpeed));
 
 
 		this.baby.setAnimation(this.actionName+this.currentDirection)

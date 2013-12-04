@@ -16,23 +16,27 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 	private var knockback:Number;
 	private var currentAnimationName:String;
 
-	public function Baby(baby:MovieClip) {
+	public function BabyClass(baby) {
+		trace("Baby Class initialized")
 		this.baby = baby;
 		this.waitWhile = random(24);
 
 
-		this.RegisterState(wait, new WaitingState(this));
-		this.RegisterState(walk, new WalkingState(this));
+		this.RegisterState(this.wait, new WaitingState(this));
+		this.RegisterState(this.walk, new WalkingState(this));
 		this.EnterState(wait);
 	}
 
 
 	public function onEnterFrame() {
+		trace("BabyClass onEnterFrame")
 		this.baby.swapDepths(int(this.baby._y));
 		animate();
-		if (this.waitWhile <= 0) {
+		if (this.waitWhile == 0) {
+			this.waitWhile = -10;
+			trace("Waiting finished");
 			this.EnterState(walk);
-		} else {
+		} else if (this.waitWhile > 0) {
 			this.waitWhile--
 		}
 		super.onEnterFrame()
@@ -68,6 +72,7 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 
 
 	public function setCoordinates(nextCoordinates) {
+		trace("Baby setCoordinates"  + nextCoordinates.x)
 		this.baby._x = nextCoordinates.x;
 		this.baby._y = nextCoordinates.y;
 	}

@@ -3,6 +3,7 @@
 
 import src.Enemies.Baby.BabyClass;
 
+import src.Utilities.Directions;
 /* "Documentation" 
 	
 	Baby
@@ -13,8 +14,8 @@ import src.Enemies.Baby.BabyClass;
 
 */
 
-
 var baby = new BabyClass(this);
+//trace(baby.test());
 /*
 var states:Object;
 
