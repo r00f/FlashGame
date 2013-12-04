@@ -7,6 +7,7 @@ class   src.States.Baby.AttackingState implements State {
 
 
     public function AttackingState(baby:BabyClass) {
+        // Store the baby
         this.baby = baby;
     }
 

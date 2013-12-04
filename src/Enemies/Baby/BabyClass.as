@@ -24,25 +24,29 @@ class src.Enemies.Baby.BabyClass extends StateMachine {
 		this.baby = baby;
 		this.waitWhile = random(24);
 
-
+		// Register all the States
 		this.RegisterState(this.wait, new WaitingState(this));
 		this.RegisterState(this.walk, new WalkingState(this));
 		this.RegisterState(this.attack, new AttackingState(this));
+
+		// Start by waiting
 		this.EnterState(wait);
 	}
 
 
 	public function onEnterFrame() {
-
 		this.baby.swapDepths(int(this.baby._y));
-		animate();
-		if (this.waitWhile == 0) {
-			this.waitWhile = -10;
 
+		animate();
+
+		if (this.waitWhile == 0) {
+			this.waitWhile--;
+			// If we stopped waiting start walking
 			this.EnterState(walk);
 		} else if (this.waitWhile > 0) {
 			this.waitWhile--
 		}
+		// Always call super.onEnterFrame() to trigger the state machine.
 		super.onEnterFrame()
 	}
 
