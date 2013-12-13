@@ -1,4 +1,4 @@
-_xscale=200;
+﻿_xscale=200;
 _yscale=200;
 
 var xKugelspeed = 0;
@@ -6,6 +6,7 @@ var yKugelspeed = 0;
 var vNolight = 0;
 var vNokugel =0;
 var vQuality = "high"
+var vMusic = 1;
 _quality = vQuality;
 var vWalls =  new Array(
 	_root.world.wall.wall1,
@@ -24,6 +25,7 @@ this.onEnterFrame = function() {
 	_root.key_space = Key.isDown(32) ? true : false;
 	_root.key_esc = Key.isDown(27) ? true : false;
 	_root.key_enter = Key.isDown(13) ? true : false;
+	trace(vMusic);
 };
 
 stop();
