@@ -54,24 +54,13 @@ function enemiesHit(hitbox):Array {
 }
 
 
-var vWallList = new Array();
-
-function addWall(wall) {
-	vWallList.push(wall);
-}
-
-
-
-function wallsHit(hitbox):Array {
-	var returnArray = new Array();
-	for (var i = 0; i < vWallList.length; i++) {
-		if (hitbox.hitTest(vWallList[i])) {
-			returnArray.push(vWallList[i]);
-		}
-	}
-	return returnArray;
-}
-
 function hitAWall(hitbox) {
-	return this.wallsHit(hitbox).length > 0;
+	var x_now = int(this.world._x);
+	var y_now = int(this.world._y);
+	this.world._x = 0;
+	this.world._y = 0;
+	var result = this.world.wall.hitTest(hitbox._x, hitbox._y, true);
+	this.world._x = x_now;
+	this.world._y = y_now;
+	return result;
 }
