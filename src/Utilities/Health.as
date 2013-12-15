@@ -1,4 +1,4 @@
-﻿var vMaxHealth = 100;
+var vMaxHealth = 100;
 var vHealthRegeneration:Number = 0;
 var vHealthPoints =  100;
 
@@ -14,20 +14,12 @@ function Hit(damage:Number) {
 	this.changeHealth(-damage);
 }
 
-function knockback(xDistance:Number, yDistance:Number) {
-	x_next += xDistance;
-	y_next += yDistance;
-}
-
-this.onEnterFrame = function()
-{
-	
+onClipEvent(enterFrame) {
 	this.regenerate();
 }
 
-function regenerate() {
-	if (this.getManaPoints() < this.vMaxMana) {
-		this.changeMana(vManaRegeneration);
+function regenerateHealth() {
+	if (this.getHealthPoints() < this.vMaxHealth) {
 		this.changeHealth(vHealthRegeneration);
 	}
 }
