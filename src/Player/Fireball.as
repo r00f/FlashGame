@@ -33,15 +33,7 @@ if (vNumber > 0) {
 }
 
 
-function hittest() {
-	for (var i = 0; i < _root.vWalls.length; i++) {
-		var wall = _root.vWalls[i];
-		if (fireball_hit.hitTest(wall)) {
-		 	return true;
-	 	}
-	}
-	return false;
-}
+
 
 this.onEnterFrame = function()
 {
@@ -53,7 +45,7 @@ this.onEnterFrame = function()
 
 	if (!this.vIsExploding) {
 		
-		if (hittest()) {
+		if (_root.hitAWall(this)) {
 			this.vIsExploding = true;
 		}	
 		

@@ -8,12 +8,6 @@ var vNokugel =0;
 var vQuality = "high"
 var vMusic = 1;
 _quality = vQuality;
-var vWalls =  new Array(
-	_root.world.wall.wall1,
-	_root.world.wall.wall2,
-	_root.world.wall.wall3,
-	_root.world.wall.wall4
-	)
 
 this.onEnterFrame = function() {
 	_root.key_left = Key.isDown(37) ? true : false;
@@ -33,12 +27,10 @@ var vTest = 0;
 var vEnemiesList = new Array();
 
 function addEnemy(enemy) {
-	trace("Adding enemy: " + enemy)
 	vEnemiesList.push(enemy);
 }
 
 function removeEnemy(enemy) {
-	trace("Removing enemy: " + enemy + " from list :" + vEnemiesList);
 	for (var i = 0; i < vEnemiesList.length; i++ ) {
 		if (vEnemiesList[i] == enemy) {
 			if (i == vEnemiesList - 1) {
@@ -59,4 +51,27 @@ function enemiesHit(hitbox):Array {
 		}
 	}
 	return returnArray;
+}
+
+
+var vWallList = new Array();
+
+function addWall(wall) {
+	vWallList.push(wall);
+}
+
+
+
+function wallsHit(hitbox):Array {
+	var returnArray = new Array();
+	for (var i = 0; i < vWallList.length; i++) {
+		if (hitbox.hitTest(vWallList[i])) {
+			returnArray.push(vWallList[i]);
+		}
+	}
+	return returnArray;
+}
+
+function hitAWall(hitbox) {
+	return this.wallsHit(hitbox).length > 0;
 }
