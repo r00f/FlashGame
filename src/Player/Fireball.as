@@ -59,12 +59,12 @@ this.onEnterFrame = function()
 		
 		this._x += this.vKugelSpeedX;
 		this._y += this.vKugelSpeedY;
-		
-		for (i=1; i<=10; i++) {
-			if (this.hitTest(_parent["gegner"+i])) {
-				_parent["gegner"+i]._xscale-=20;
-				_root.vPoints += 50;
-			}
+
+		var enemiesHit = _root.enemiesHit(this)
+		for (var i = 0; i < enemiesHit.length; i++  ) {
+			enemy = enemiesHit[i];
+			enemy._xscale-=20;
+			_root.vPoints += 50;
 		}
 	} else if (!this.vIsExploded) {
 		gotoAndStop("explode");

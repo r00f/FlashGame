@@ -1,5 +1,8 @@
 ﻿#include "src/Utilities/Constants.as"
 #include "src/Utilities/Movement.as"
+#include "src/Utilities/Health.as"
+
+_root.addEnemy(this)
 
 /* "Documentation" 
 	

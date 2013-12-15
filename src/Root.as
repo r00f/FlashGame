@@ -51,7 +51,7 @@ function removeEnemy(enemy) {
 	}
 }
 
-function hitsEnemies(hitbox):Array {
+function enemiesHit(hitbox):Array {
 	var returnArray = new Array();
 	for (var i = 0; i < vEnemiesList.length; i++) {
 		if (hitbox.hitTest(vEnemiesList[i])) {
