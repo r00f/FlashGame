@@ -1,7 +1,8 @@
 ﻿#include "src/Utilities/Constants.as"
 #include "src/Utilities/Utilities.as"
 #include "src/Utilities/Movement.as"
-
+#include "src/Utilities/Health.as"
+#include "src/Utilities/Mana.as"
 
 /* Interface "Documentation" 
 
@@ -34,12 +35,10 @@ var idle = 1;
 
 
 /* Health / Mana */
-var vMaxMana = 100;
-var vMaxHealth = 100;
 var vManaBar:MovieClip = _root.interf.mana_bar;
 var vHealthBar:MovieClip = _root.interf.HP_bar;
-var vHealthRegeneration:Number = 0;
-var vManaRegeneration:Number = 0.5;
+this.vHealthRegeneration = 0;
+this.vManaRegeneration = 0.5;
 
 /* Fireball */
 var vTimerkugel = 0;
@@ -79,25 +78,6 @@ function getXPosition() {
 
 function getYPosition() {
 	return this._y;
-}
-
-function getHealthPoints() {
-	return this.vHealthPoints;
-}
-
-function getHealthPercentage() {
-	return 1.0/this.vMaxHealth * this.vHealthPoints;
-}
-
-function getManaPoints() {
-	return this.vManaPoints;
-}
-function getManaPercentage() {
-	return 1.0/this.vMaxMana * this.vManaPoints;
-}
-
-function spendMana(points:Number) {
-	this.changeMana(-points);
 }
 
 function Hit(damage:Number) {
@@ -249,20 +229,6 @@ function updateResourceBar(theBar:MovieClip, percent:Number) {
 }
 
 function regenerate() {
-	if (this.getManaPoints() < this.vMaxMana) {
-		this.changeMana(vManaRegeneration);
-	}
-	if (this.getHealthPoints() < this.vMaxHealth) {
-		this.changeHealth(vHealthRegeneration);
-	}
-}
-
-// Helper Functions
-
-function changeMana(change) {
-	this.vManaPoints += change;
-}
-
-function changeHealth(change) {
-	this.vHealthPoints += change;	
+	this.regenerateMana();
+	this.regenerateHealth();
 }

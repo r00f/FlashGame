@@ -14,10 +14,6 @@ function Hit(damage:Number) {
 	this.changeHealth(-damage);
 }
 
-onClipEvent(enterFrame) {
-	this.regenerateHealth();
-}
-
 function regenerateHealth() {
 	if (this.getHealthPoints() < this.vMaxHealth) {
 		this.changeHealth(vHealthRegeneration);
