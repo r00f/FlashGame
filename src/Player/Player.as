@@ -251,6 +251,8 @@ function updateResourceBar(theBar:MovieClip, percent:Number) {
 function regenerate() {
 	if (this.getManaPoints() < this.vMaxMana) {
 		this.changeMana(vManaRegeneration);
+	}
+	if (this.getHealthPoints() < this.vMaxHealth) {
 		this.changeHealth(vHealthRegeneration);
 	}
 }
