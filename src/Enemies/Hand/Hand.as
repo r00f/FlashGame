@@ -1,22 +1,20 @@
 ﻿this.swapDepths(int(this._y));
 _root.addEnemy(this);
 #include "src/Utilities/Health.as"
+var vAction;
+var vHit = false;
+
 
 this.onEnterFrame = function()
 {
-	animate();
-
-}
-
-
-function animate() {
-
 	if (this.getHealthPoints() <= 0) {
 		this.vAction = "death";
-	}
-
-	var animationName = this.vAction;
-	animations.gotoAndStop(animationName);
 }
+
+
+	animations.gotoAndStop(this.vAction);
+	
+	}
+		
 
 
