@@ -15,7 +15,7 @@ function Hit(damage:Number) {
 }
 
 onClipEvent(enterFrame) {
-	this.regenerate();
+	this.regenerateHealth();
 }
 
 function regenerateHealth() {

@@ -12,9 +12,13 @@ function spendMana(points:Number) {
 	this.changeMana(-points);
 }
 
+onClipEvent(enterFrame) {
+	this.regenerateMana();
+}
+
 
 // Helper Functions
-function regenerate() {
+function regenerateMana() {
 	if (this.getManaPoints() < this.vMaxMana) {
 		this.changeMana(vManaRegeneration);
 	}
