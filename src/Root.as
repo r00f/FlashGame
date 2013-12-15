@@ -46,7 +46,7 @@ function removeEnemy(enemy) {
 function enemiesHit(hitbox):Array {
 	var returnArray = new Array();
 	for (var i = 0; i < vEnemiesList.length; i++) {
-		if (hitbox.hitTest(vEnemiesList[i])) {
+		if (hitbox.hitTest(vEnemiesList[i].animations.body_hit)) {
 			returnArray.push(vEnemiesList[i]);
 		}
 	}
