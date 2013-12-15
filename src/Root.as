@@ -25,7 +25,38 @@ this.onEnterFrame = function() {
 	_root.key_space = Key.isDown(32) ? true : false;
 	_root.key_esc = Key.isDown(27) ? true : false;
 	_root.key_enter = Key.isDown(13) ? true : false;
-	trace(vMusic);
+	//trace(vMusic);
 };
 
 stop();
+var vTest = 0;
+var vEnemiesList = new Array();
+
+function addEnemy(enemy) {
+	trace("Adding enemy: " + enemy)
+	vEnemiesList.push(enemy);
+}
+
+function removeEnemy(enemy) {
+	trace("Removing enemy: " + enemy + " from list :" + vEnemiesList);
+	for (var i = 0; i < vEnemiesList.length; i++ ) {
+		if (vEnemiesList[i] == enemy) {
+			if (i == vEnemiesList - 1) {
+					vEnemiesList = vEnemiesList.slice(0,i)
+				} else {
+					vEnemiesList = vEnemiesList.slice(0,i).concat(vEnemiesList.slice(i+1))
+			}
+			
+		}
+	}
+}
+
+function hitsEnemies(hitbox):Array {
+	var returnArray = new Array();
+	for (var i = 0, i < vEnemiesList.length, i++) {
+		if (hitbox.hitTest(vEnemiesList[i])) {
+			returnArray.push(vEnemiesList[i]);
+		}
+	}
+	return returnArray;
+}
