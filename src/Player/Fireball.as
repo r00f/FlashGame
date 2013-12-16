@@ -29,7 +29,7 @@ if (vNumber > 0) {
 	this._x = this.vPlayer.getXPosition() + FireballXOffset;
 	this._y = this.vPlayer.getYPosition() + FireballYOffset;
 
-	this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vFireballLightName+_root.vNoKugel, this.getDepth() -1 , 
+	this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vFireballLightName+_root.vNoKugel, this.getNextHighestDepth(), 
 		{_x: this._x, _y: this._y, 
 		vKugelSpeedX: this.vKugelSpeedX, vKugelSpeedY: this.vKugelSpeedY}
 		);
@@ -37,8 +37,6 @@ if (vNumber > 0) {
 	// Set Direction to the same the player is facing
 	gotoAndStop(this.vPlayer.getDirection());
 }
-
-
 
 trace("Fireball: "+ this._x + ","+this._y)
 trace("Player: "+ vPlayer._x + ","+vPlayer._y)
