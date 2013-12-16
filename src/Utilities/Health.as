@@ -1,4 +1,4 @@
-var vMaxHealth = 100;
+﻿var vMaxHealth = 100;
 var vHealthRegeneration:Number = 0;
 var vHealthPoints =  100;
 
@@ -12,6 +12,7 @@ function getHealthPercentage() {
 
 function Hit(damage:Number) {
 	this.changeHealth(-damage);
+	this.attachMovie("blink_red","newblink_red",200);
 }
 
 function regenerateHealth() {
@@ -20,5 +21,5 @@ function regenerateHealth() {
 	}
 }
 function changeHealth(change) {
-	this.vHealthPoints += change;	
+	this.vHealthPoints += change;
 }
