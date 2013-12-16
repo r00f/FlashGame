@@ -29,8 +29,8 @@ if (vNumber > 0) {
 	this._x = this.vPlayer.getXPosition() + FireballXOffset;
 	this._y = this.vPlayer.getYPosition() + FireballYOffset;
 
-	this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vFireballLightName+_root.vNoKugel, this.getNextHighestDepth(), 
-		{_x: this._x, _y: this._y, 
+	this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vOriginalFireballLight+_root.vNokugel, this.getNextHighestDepth(), 
+		{ _x: this._x, _y: this._y, 
 		vKugelSpeedX: this.vKugelSpeedX, vKugelSpeedY: this.vKugelSpeedY}
 		);
 
@@ -39,6 +39,7 @@ if (vNumber > 0) {
 }
 
 trace("Fireball: "+ this._x + ","+this._y)
+trace("Light: " + this.vLight)
 trace("Player: "+ vPlayer._x + ","+vPlayer._y)
 
 this.onEnterFrame = function()
