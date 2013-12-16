@@ -59,6 +59,8 @@ this.onEnterFrame = function()
 			_root.vPoints += 50;
 		}
 	} else if (!this.vIsExploded) {
+
+		trace("Fireball explode: " +this)
 		gotoAndStop("explode");
 		this.vLight.explode();
 		this.vKugelSpeedX = 0;
@@ -68,7 +70,7 @@ this.onEnterFrame = function()
 	this.swapDepths(int(this._y));
 	vTimer += 1;
 	if (vTimer == 50) {
-		trace(this)
+		trace("Fireball despawn: " +this)
 		this.removeMovieClip();
 	}
 }
