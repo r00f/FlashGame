@@ -44,7 +44,7 @@ this.vManaRegeneration = 0.5;
 var vTimerkugel = 0;
 var vFireBallManaCost = 20;
 var vFireBallWaitFrames = 10;
-var vFireBallOriginal:MovieClip = _root.world.kugel;
+var vFireBallOriginal = "fireball";
 var vFireBallName = "kugel";
 
 var x_next;
