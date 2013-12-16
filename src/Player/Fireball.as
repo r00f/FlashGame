@@ -27,7 +27,7 @@ this._x = this.vPlayer.getXPosition() + FireballXOffset;
 this._y = this.vPlayer.getYPosition() + FireballYOffset;
 //vKugelSpeedX = 0;
 //vKugelSpeedY = 0;
-this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vOriginalFireballLight+this.number, this.getNextHighestDepth(), 
+this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vOriginalFireballLight+this.number, this.number, 
 	{ _x: this._x, _y: this._y });
 
 // Set Direction to the same the player is facing
@@ -55,8 +55,9 @@ this.onEnterFrame = function()
 		var enemiesHit = _root.enemiesHit(this)
 		for (var i = 0; i < enemiesHit.length; i++  ) {
 			enemy = enemiesHit[i];
-			enemy._xscale-=20;
-			_root.vPoints += 50;
+			enemy.Hit(5);
+			//enemy._xscale-=20;
+			//_root.vPoints += 50;
 		}
 	} else if (!this.vIsExploded) {
 

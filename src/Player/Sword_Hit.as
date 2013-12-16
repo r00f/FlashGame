@@ -13,7 +13,7 @@ this.onEnterFrame = function()
 		enemy = enemiesHit[i];		
 		if (!this.vEnemiesHitWithCurrentHit[enemy]) {
 			this.vEnemiesHitWithCurrentHit[enemy] = true
-			enemy.Hit(3);
+			enemy.Hit(34);
 		}
 	}
 	this.vCurrentFrame++;

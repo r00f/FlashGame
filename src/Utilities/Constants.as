@@ -7,4 +7,4 @@
 
 var FireballYOffset = -25;
 var FireballXOffset = 0;
-var FireballSpeed = 10;
+var FireballSpeed = 13;
