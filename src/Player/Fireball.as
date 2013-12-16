@@ -8,7 +8,7 @@ var vPlayer:MovieClip = _root.world.player;
 var vKugelSpeedX:Number = 0;
 var vKugelSpeedY:Number = 0;
 
-var vOriginalFireballLight:MovieClip = _root.world.darkness.fireball_light;
+var vOriginalFireballLight = "light_fireball";
 var vNumber = _root.vNokugel;
 var vFireballLightName:String = "fireball_light" + vNumber;
 
