@@ -116,12 +116,14 @@ function handleFireball() {
 function shootFireBallIfPossible() {
 	if ((vTimerkugel > vFireBallWaitFrames) and (this.getManaPoints() >= vFireBallManaCost)) {
 		// var a = b++ bedeutet var a = b; b += 1;
-		var nextFireBallNumber = _root.vNokugel++; 
+		var nextFireBallNumber = _root.vNokugel; 
 		var nextName = vFireBallOriginal + nextFireBallNumber;
 		trace("NextFireballName: " + nextName)
-		_root.world.attachMovie(vFireBallOriginal,nextName , this.getNextHighestDepth());
+		_root.world.attachMovie(vFireBallOriginal,nextName , this.getNextHighestDepth(), {number: nextFireBallNumber });
 		this.spendMana(vFireBallManaCost);
 		vTimerkugel = 0;	
+		_root.vNokugel++;
+
 	}
 }
 

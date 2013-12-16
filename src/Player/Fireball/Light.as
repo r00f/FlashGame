@@ -25,8 +25,4 @@ this.onEnterFrame = function() {
 		
 		this.vIsExploded = true;
 	}
-	vTimerkugel += 1;
-	if (vTimerkugel == 50) {
-		this.removeMovieClip();
-	}
 }

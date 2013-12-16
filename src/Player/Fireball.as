@@ -9,8 +9,6 @@ var vKugelSpeedX:Number = 0;
 var vKugelSpeedY:Number = 0;
 
 var vOriginalFireballLight = "light_fireball";
-var vNumber = _root.vNokugel;
-var vFireballLightName:String = "fireball_light" + vNumber;
 
 var vIsExploding = false;
 var vIsExploded = false;
@@ -18,27 +16,24 @@ var vIsExploded = false;
 var vLight;
 var vTimer = 0;
 
-trace("New Fireball: " + this)
+trace("New Fireball: " + this + " number: " + this.number)
 
 /* "public" functions   */
 
 /* SETUP */
-if (vNumber > 0) {
-	this.setupDirection(FireballSpeed) // Utilities.as
+this.setupDirection(FireballSpeed) // Utilities.as
 
-	this._x = this.vPlayer.getXPosition() + FireballXOffset;
-	this._y = this.vPlayer.getYPosition() + FireballYOffset;
-	vKugelSpeedX = 0;
-	vKugelSpeedY = 0;
+this._x = this.vPlayer.getXPosition() + FireballXOffset;
+this._y = this.vPlayer.getYPosition() + FireballYOffset;
+vKugelSpeedX = 0;
+vKugelSpeedY = 0;
+this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vOriginalFireballLight+this.number, this.getNextHighestDepth(), 
+	{ _x: this._x, _y: this._y, 
+	vKugelSpeedX: this.vKugelSpeedX, vKugelSpeedY: this.vKugelSpeedY}
+	);
 
-	this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vOriginalFireballLight+_root.vNokugel, this.getNextHighestDepth(), 
-		{ _x: this._x, _y: this._y, 
-		vKugelSpeedX: this.vKugelSpeedX, vKugelSpeedY: this.vKugelSpeedY}
-		);
-
-	// Set Direction to the same the player is facing
-	gotoAndStop(this.vPlayer.getDirection());
-}
+// Set Direction to the same the player is facing
+gotoAndStop(this.vPlayer.getDirection());
 
 
 
@@ -75,7 +70,7 @@ this.onEnterFrame = function()
 	this.swapDepths(int(this._y));
 	vTimer += 1;
 	if (vTimer == 50) {
-		trace("Fireball despawn: " +this)
+		trace("Fireball despawn: " +this +  " and light despawn: " + this.vLight)
 		this.vLight.removeMovieClip()
 		this.removeMovieClip();
 	}
