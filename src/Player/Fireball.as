@@ -25,8 +25,8 @@ this.setupDirection(FireballSpeed) // Utilities.as
 
 this._x = this.vPlayer.getXPosition() + FireballXOffset;
 this._y = this.vPlayer.getYPosition() + FireballYOffset;
-vKugelSpeedX = 0;
-vKugelSpeedY = 0;
+//vKugelSpeedX = 0;
+//vKugelSpeedY = 0;
 this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vOriginalFireballLight+this.number, this.getNextHighestDepth(), 
 	{ _x: this._x, _y: this._y });
 
@@ -62,7 +62,7 @@ this.onEnterFrame = function()
 
 		trace("Fireball explode: " +this)
 		gotoAndStop("explode");
-		this.vLight.gotoAndStop("explode");
+		this.vLight.gotoAndPlay("explode");
 		this.vLight.explode();
 		this.vKugelSpeedX = 0;
 		this.vKugelSpeedY = 0;
