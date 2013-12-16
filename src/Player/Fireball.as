@@ -28,9 +28,7 @@ this._y = this.vPlayer.getYPosition() + FireballYOffset;
 vKugelSpeedX = 0;
 vKugelSpeedY = 0;
 this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vOriginalFireballLight+this.number, this.getNextHighestDepth(), 
-	{ _x: this._x, _y: this._y, 
-	vKugelSpeedX: this.vKugelSpeedX, vKugelSpeedY: this.vKugelSpeedY}
-	);
+	{ _x: this._x, _y: this._y });
 
 // Set Direction to the same the player is facing
 gotoAndStop(this.vPlayer.getDirection());
@@ -51,6 +49,8 @@ this.onEnterFrame = function()
 		
 		this._x += this.vKugelSpeedX;
 		this._y += this.vKugelSpeedY;
+		this.vLight._x += this.vKugelSpeedX;
+		this.vLight._y += this.vKugelSpeedY;
 
 		var enemiesHit = _root.enemiesHit(this)
 		for (var i = 0; i < enemiesHit.length; i++  ) {
@@ -62,6 +62,7 @@ this.onEnterFrame = function()
 
 		trace("Fireball explode: " +this)
 		gotoAndStop("explode");
+		this.vLight.gotoAndStop("explode");
 		this.vLight.explode();
 		this.vKugelSpeedX = 0;
 		this.vKugelSpeedY = 0;
@@ -70,8 +71,6 @@ this.onEnterFrame = function()
 	this.swapDepths(int(this._y));
 	vTimer += 1;
 	if (vTimer == 50) {
-		trace("Fireball despawn: " +this +  " and light despawn: " + this.vLight)
-		this.vLight.removeMovieClip()
-		this.removeMovieClip();
+		this.vIsExploding = true;
 	}
 }
