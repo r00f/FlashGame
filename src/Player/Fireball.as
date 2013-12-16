@@ -18,6 +18,7 @@ var vIsExploded = false;
 var vLight;
 var vTimer = 0;
 
+trace("New Fireball: " + this)
 
 /* "public" functions   */
 
@@ -28,21 +29,22 @@ if (vNumber > 0) {
 	this._x = this.vPlayer.getXPosition() + FireballXOffset;
 	this._y = this.vPlayer.getYPosition() + FireballYOffset;
 
+	this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vFireballLightName+_root.vNoKugel, this.getDepth() -1 , 
+		{_x: this._x, _y: this._y, 
+		vKugelSpeedX: this.vKugelSpeedX, vKugelSpeedY: this.vKugelSpeedY}
+		);
+
 	// Set Direction to the same the player is facing
 	gotoAndStop(this.vPlayer.getDirection());
 }
 
 
 
+trace("Fireball: "+ this._x + ","+this._y)
+trace("Player: "+ vPlayer._x + ","+vPlayer._y)
 
 this.onEnterFrame = function()
 {
-	if (!vLight && this.vNumber > 0) {
-		duplicateMovieClip(this.vOriginalFireballLight, this.vFireballLightName, this.vNumber);
-		vLight = _root.world.darkness[vFireballLightName];
-
-	}
-
 	if (!this.vIsExploding) {
 		
 		if (_root.hitAWall(this)) {
@@ -68,6 +70,7 @@ this.onEnterFrame = function()
 	this.swapDepths(int(this._y));
 	vTimer += 1;
 	if (vTimer == 50) {
+		trace(this)
 		this.removeMovieClip();
 	}
 }

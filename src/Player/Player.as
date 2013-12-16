@@ -114,10 +114,11 @@ function handleFireball() {
 }
 
 function shootFireBallIfPossible() {
+	trace(this)
 	if ((vTimerkugel > vFireBallWaitFrames) and (this.getManaPoints() >= vFireBallManaCost)) {
 		// var a = b++ bedeutet var a = b; b += 1;
 		var nextFireBallNumber = _root.vNokugel++; 
-		duplicateMovieClip(vFireBallOriginal, vFireBallName + nextFireBallNumber, nextFireBallNumber);
+		_root.world.attachMovie(vFireBallOriginal, vFireBallOriginal + nextFireBallNumber, this.getNextHighestDepth());
 		this.spendMana(vFireBallManaCost);
 		vTimerkugel = 0;	
 	}

@@ -5,17 +5,18 @@ stop();
 this.blendMode = "alpha"
 // "private" variables
 var vPlayer:MovieClip = _root.world.player;
-var vKugelSpeedX:Number = 0;
-var vKugelSpeedY:Number = 0;
 var vIsExploding:Boolean = false;
 
 var vIsExploded = false;
+
+
+/*
 this._x = this.vPlayer.getXPosition() + FireballXOffset;
 this._y = this.vPlayer.getYPosition() + FireballYOffset;
 
 vTimerkugel = 0;
 this.setupDirection(FireballSpeed) // Utilities.as
-
+*/
 // "public" functions
 
 function explode() {
