@@ -198,6 +198,7 @@ function animate() {
 	}
 	if (this.getHealthPoints() <= 0) {
 		this.vAction = "death";
+		speed = 0;
 	}
 	if (this.vSword = true) {
 		this.vWeapon = "sword";
