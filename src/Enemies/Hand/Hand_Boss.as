@@ -7,7 +7,7 @@ var vAction;
 var vHit = false;
 var vHealthRegeneration:Number = 0;
 this.vMaxHealth = 300;
-this.vHealthPoints =  vMaxHealth,
+this.vHealthPoints =  vMaxHealth;
 var vResourceBarLinkage = "hp_bar_boss";
 var vHealthBar = _root.interf.attachMovie(vResourceBarLinkage, vResourceBarLinkage, _root.interf.getNextHighestDepth());
 
