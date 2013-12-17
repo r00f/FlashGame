@@ -60,7 +60,7 @@ this.onEnterFrame = function() {
 	}
 	
 	
-	if (this.vHit) {
+	if ((this.vHit) or (this.getHealthPoints() <= 0)) {
 		vXSpeed = 0;
 		vYSpeed = 0;	
 		this.vAction = "hit_";
