@@ -7,3 +7,10 @@ vHealthBar._xscale = 150;
 vHealthBar._yscale = 120;
 vHealthBar._y -= 270
 vHealthBar._x -= 50
+
+
+this.onEnterFrame = function()
+{
+	updateResourceBar(this.vHealthBar, this._parent.getHealthPercentage());
+}
+
