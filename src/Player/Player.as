@@ -42,7 +42,7 @@ this.vManaRegeneration = 0.5;
 
 /* Fireball */
 var vTimerkugel = 0;
-var vFireBallManaCost = 0;
+var vFireBallManaCost = 25;
 var vFireBallWaitFrames = 10;
 var vFireBallOriginal = "fireball";
 var vFireBallName = "kugel";
