@@ -80,10 +80,6 @@ function getYPosition() {
 	return this._y;
 }
 
-function Hit(damage:Number) {
-	this.changeHealth(-damage);
-}
-
 function knockback(xDistance:Number, yDistance:Number) {
 	x_next += xDistance;
 	y_next += yDistance;

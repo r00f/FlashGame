@@ -12,7 +12,7 @@ function getHealthPercentage() {
 
 function Hit(damage:Number) {
 	this.changeHealth(-damage);
-	this.attachMovie("blink_red","newblink_red",200);
+	this.attachMovie("blink_red","newblink_red", this.getNextHighestDepth());
 }
 
 function regenerateHealth() {
