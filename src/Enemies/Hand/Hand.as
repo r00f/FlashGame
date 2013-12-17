@@ -4,17 +4,14 @@ _root.addEnemy(this);
 var vAction;
 var vHit = false;
 
-
 this.onEnterFrame = function()
 {
 	if (this.getHealthPoints() <= 0) {
 		this.vAction = "death";
+	}
+	animations.gotoAndStop(this.vAction);
+
 }
 
-
-	animations.gotoAndStop(this.vAction);
-	
-	}
-		
 
 

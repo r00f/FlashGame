@@ -3,7 +3,7 @@
 }
 
 onClipEvent (enterFrame) {
-	if (this.hitTest(_root.world.player.body_hit)) {
+	if (_root.hitsPlayerBody(this)) {
 		_root.world.player.knockback(0,-20);
 		_root.world.player.Hit(20);
 	}

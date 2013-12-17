@@ -38,7 +38,7 @@ function removeEnemy(enemy) {
 				} else {
 					vEnemiesList = vEnemiesList.slice(0,i).concat(vEnemiesList.slice(i+1))
 			}
-			
+
 		}
 	}
 }
@@ -63,4 +63,8 @@ function hitAWall(hitbox) {
 	this.world._x = x_now;
 	this.world._y = y_now;
 	return result;
+}
+
+function hitsPlayerBody(hitbox) {
+	return hitbox.hitTest(_root.world.player.body_hit)
 }

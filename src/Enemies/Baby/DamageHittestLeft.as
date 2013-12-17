@@ -13,7 +13,7 @@ onClipEvent (enterFrame) {
 	} else {
 		vKnockback = vAbsoluteKnockback
 	}
-	if (this.hitTest(_root.world.player.hit_body)) {
+	if (_root.hitsPlayerBody(this)) {
 		_root.world.player.knockback(vKnockback,0);
 		_root.world.player.Hit(damage);
 	}
