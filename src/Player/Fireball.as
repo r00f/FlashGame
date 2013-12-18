@@ -15,11 +15,6 @@ var vIsExploded = false;
 
 var vLight;
 var vTimer = 0;
-
-trace("New Fireball: " + this + " number: " + this.number)
-
-/* "public" functions   */
-
 /* SETUP */
 this.setupDirection(FireballSpeed) // Utilities.as
 
@@ -27,26 +22,21 @@ this._x = this.vPlayer.getXPosition() + FireballXOffset;
 this._y = this.vPlayer.getYPosition() + FireballYOffset;
 //vKugelSpeedX = 0;
 //vKugelSpeedY = 0;
-this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vOriginalFireballLight+this.number, this.number, 
+this.vLight = _root.world.darkness.attachMovie(vOriginalFireballLight, vOriginalFireballLight+this.number, this.number,
 	{ _x: this._x, _y: this._y });
 
 // Set Direction to the same the player is facing
 gotoAndStop(this.vPlayer.getDirection());
 
 
-
-trace("Fireball: "+ this._x + ","+this._y)
-trace("Light: " + this.vLight)
-trace("Player: "+ vPlayer._x + ","+vPlayer._y)
-
 this.onEnterFrame = function()
 {
 	if (!this.vIsExploding) {
-		
+
 		if (_root.hitAWall(this)) {
 			this.vIsExploding = true;
-		}	
-		
+		}
+
 		this._x += this.vKugelSpeedX;
 		this._y += this.vKugelSpeedY;
 		this.vLight._x += this.vKugelSpeedX;
