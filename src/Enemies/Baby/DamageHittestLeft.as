@@ -2,10 +2,13 @@
 
 	#include "src/Utilities/Constants.as"
 
-	var vBaby = _parent._parent._parent._parent;
+	var vBaby = _parent._parent._parent;
 	damage = vBaby.getDamage()
-	var vAbsoluteKnockback = vBaby.getKnockback()
+	var vAbsoluteKnockback = vBaby.getKnockback();
 	var vKnockback = vAbsoluteKnockback;
+	trace("babydmg :" + damage);
+	trace("babyknockback :" + vKnockback);
+	trace("vBaby :" + vBaby);
 }
 onClipEvent (enterFrame) {
 	if (vBaby.getDirection() == Directions.left) {

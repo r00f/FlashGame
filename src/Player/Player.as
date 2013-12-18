@@ -63,7 +63,7 @@ var vDead = "";
 _parent.wall._visible = 0;
 
 // Normgeschwindigkeit
-var speed = 6;
+var speed = 5;
 // Kamerapositionswerte deklarieren
 var cam_x = int(_parent._x);
 var cam_y = int(_parent._y);

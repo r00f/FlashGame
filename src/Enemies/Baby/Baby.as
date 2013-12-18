@@ -14,6 +14,8 @@ _root.addEnemy(this)
 
 */
 
+this.swapDepths(int(this._y));
+
 var vHit = false;
 var vAction;
 
@@ -24,7 +26,8 @@ var vXSpeed = this.vSpeed;
 var vYSpeed = 0;
 
 var vDamage = 1/this.vSpeed * 100;
-var vKnockback = 50;
+var vKnockback = 25;
+//trace("babydmg :" + this.vDamage)
 
 function doAttack() {
 	this.vHit = true;
@@ -54,6 +57,7 @@ var y_next;
 // In jedem Bild wiederkehrend ausgeführter Scriptteil:
 this.onEnterFrame = function() {
 	
+
 	if (vWait > 0) {
 		vWait = vWait - 1;
 		return;
@@ -92,8 +96,8 @@ this.onEnterFrame = function() {
 			this.vAction = "baby_walk_";
 		}
 	}
-
+	
 	animations.gotoAndStop(this.vAction+this.vDirection);
-	this.swapDepths(int(this._y));
+	
 };
 

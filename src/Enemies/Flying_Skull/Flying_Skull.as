@@ -54,6 +54,9 @@ var y_next;
 // In jedem Bild wiederkehrend ausgeführter Scriptteil:
 this.onEnterFrame = function() {
 	
+	
+	this.swapDepths(int(this._y));
+	
 	if (vWait > 0) {
 		vWait = vWait - 1;
 		return;
@@ -86,6 +89,12 @@ this.onEnterFrame = function() {
 			vYSpeed = this.vSpeed;
 			this.vDirection =  Directions.down;
 		}*/
+		
+		if (this.getHealthPoints() <= 0) {
+		this.vAction = "skull_death_";
+		vSpeed = 0;
+		}
+		
 		calculateNextPosition(vXSpeed, vYSpeed) // Movement.as
 
 		if (vXSpeed != 0 or vYSpeed !=0) {
@@ -94,6 +103,6 @@ this.onEnterFrame = function() {
 	}
 
 	animations.gotoAndStop(this.vAction+this.vDirection);
-	this.swapDepths(int(this._y));
+	
 };
 
