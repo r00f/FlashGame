@@ -16,6 +16,7 @@
 		private const LEFTEND:Number = 4;
 		private const RIGHTEND:Number = 5;
 		private const HORIZONTAL_MIDDLE:Number = 6;
+		private const HORIZONTAL_DOOR:Number = 7;
 		
 		
 		public function Wall() {
@@ -27,9 +28,7 @@
 		
 		public function setUpInFrame(e:Event) {
 			this.adjustToWalls();
-			//if (foundOther) {
-				removeEventListener(Event.ENTER_FRAME, setUpInFrame, false);
-			//}
+			removeEventListener(Event.ENTER_FRAME, setUpInFrame, false);
 		}
 		
 		private function adjustToWalls() {
@@ -73,33 +72,29 @@
 				}
 			}
 			
-			
+			if (isBelow && isAbove && isRight && isLeft) {
+				trace("central part, need more animations");
+			}
 			if (isBelow && isAbove) {
 				var middle = aboveWall.y - (aboveWall.y - belowWall.y)/2;
 				this.x = belowWall.x;
 				this.y = middle;
-				trace("middle"+this.height);
 				this.gotoAndStop(VERTICAL_MIDDLE);
 			} else if (isRight && isLeft) {
-				trace("hmiddle"+this.width);
 				this.gotoAndStop(HORIZONTAL_MIDDLE);
 				this.y = leftWall.y;
 				this.x = leftWall.x + (this.width - 3);
 			} else if (isBelow) {
 				this.gotoAndStop(BOTTOMEND);
-				
-				trace("below" + this.height);
 				this.x = aboveWall.x;
 				this.y = aboveWall.y + this.height;
 				
 			} else if (isAbove) {
 				this.gotoAndStop(TOPEND);
-				trace("above" + this.height);
 				this.x = belowWall.x;
 				this.y = belowWall.y - this.height + 13;
 			} else if (isRight) {
 				this.gotoAndStop(RIGHTEND);
-				trace("right" + this.width);
 				this.y = leftWall.y;
 				this.x = leftWall.x + (this.width -3);
 			} else if (isLeft) {
@@ -111,9 +106,9 @@
 			} else {
 				this.foundOther = false;
 				trace("nothing near");
+				this.gotoAndStop(HORIZONTAL_DOOR);
 			}	
 			
-			trace("new position:" + this.x)
 		}
 		
 		private function isWallAbove(other:Wall) {
