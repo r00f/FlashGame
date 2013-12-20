@@ -115,8 +115,23 @@
 			
 			if (this.name == HORIZONTAL_DOOR_NAME) {
 				this.gotoAndStop(HORIZONTAL_DOOR);
+				if (isRight && isLeft) {
 				this.y = leftWall.y;
+				
 				this.x = leftWall.x + (this.width - 3);
+				//this.x = leftWall.x + Math.abs(rightWall.x - leftWall.x);
+				} else if (isRight) {
+					this.y = leftWall.y;
+					
+					this.x = leftWall.x + (this.width - 3);
+					//this.x = leftWall.x + Math.abs(rightWall.x - leftWall.x);
+				}	else if (isLeft) {
+					this.y = rightWall.y;
+					
+					this.x = rightWall.x - (this.width - 3);
+					//this.x = leftWall.x + Math.abs(rightWall.x - leftWall.x);
+				}
+				
 			}
 			
 		}
