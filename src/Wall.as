@@ -26,11 +26,15 @@
 			this.rootRef.addWall(this);
 			addEventListener(Event.ENTER_FRAME,setUpInFrame,false,0,true);
 		}
-	private var foundOther = false;
 		
+		
+		private var tries = 0;
 		public function setUpInFrame(e:Event) {
+			this.tries++;
 			this.adjustToWalls();
-			removeEventListener(Event.ENTER_FRAME, setUpInFrame, false);
+			if (this.tries > 2) {
+				removeEventListener(Event.ENTER_FRAME, setUpInFrame, false);
+			}
 		}
 		
 		private function adjustToWalls() {
@@ -39,7 +43,6 @@
 			var isRight:Boolean = false;
 			var isLeft:Boolean = false;
 			
-			this.foundOther = true;
 			var aboveWall:Wall;
 			var belowWall:Wall;
 			var rightWall:Wall;
@@ -100,16 +103,11 @@
 				this.y = leftWall.y;
 				this.x = leftWall.x + (this.width -3);
 			} else if (isLeft) {
-				trace("left" + this.width + " - " + this)
 				this.gotoAndStop(LEFTEND);
 				this.y = rightWall.y;
-				
 				this.x = rightWall.x - (this.width-3);
 			} else {
-				this.foundOther = false;
 				var random = ((int)(Math.random()*100))%7+1;
-				
-				trace("nothing near");
 				this.gotoAndStop(random);
 			}	
 			
