@@ -1,9 +1,11 @@
 ﻿#include "src/Utilities/Constants.as"
 #include "src/Utilities/Utilities.as"
 #include "src/Utilities/Movement.as"
+#include "src/Utilities/Health.as"
+#include "src/Utilities/Mana.as"
+#include "src/Utilities/Resourcebar.as"
 
-
-/* Interface "Documentation" 
+/* Interface "Documentation"
 
  Player
  	- getDirection() : Returns String with the Direction
@@ -20,7 +22,7 @@
  	- spendMana(points:Number) : Spends points ManaPoints
 
  	- knockback(xDistance, yDistance) : Knocks the player back by xDistance and yDistance
- 	
+
 */
 
 // "private" variables
@@ -34,18 +36,16 @@ var idle = 1;
 
 
 /* Health / Mana */
-var vMaxMana = 100;
-var vMaxHealth = 100;
 var vManaBar:MovieClip = _root.interf.mana_bar;
 var vHealthBar:MovieClip = _root.interf.HP_bar;
-var vHealthRegeneration:Number = 0;
-var vManaRegeneration:Number = 0.5;
+this.vHealthRegeneration = 0;
+this.vManaRegeneration = 0.5;
 
 /* Fireball */
 var vTimerkugel = 0;
-var vFireBallManaCost = 20;
+var vFireBallManaCost = 25;
 var vFireBallWaitFrames = 10;
-var vFireBallOriginal:MovieClip = _root.world.kugel;
+var vFireBallOriginal = "fireball";
 var vFireBallName = "kugel";
 
 var x_next;
@@ -57,11 +57,13 @@ var vHealthPoints =  100;
 
 var kugelSpeed = {x: 0, y: 0}
 
+var vDead = "";
+
 //wall sichtbar/nicht sichtbar
 _parent.wall._visible = 0;
 
 // Normgeschwindigkeit
-var speed = 4;
+var speed = 5;
 // Kamerapositionswerte deklarieren
 var cam_x = int(_parent._x);
 var cam_y = int(_parent._y);
@@ -81,29 +83,6 @@ function getYPosition() {
 	return this._y;
 }
 
-function getHealthPoints() {
-	return this.vHealthPoints;
-}
-
-function getHealthPercentage() {
-	return 1.0/this.vMaxHealth * this.vHealthPoints;
-}
-
-function getManaPoints() {
-	return this.vManaPoints;
-}
-function getManaPercentage() {
-	return 1.0/this.vMaxMana * this.vManaPoints;
-}
-
-function spendMana(points:Number) {
-	this.changeMana(-points);
-}
-
-function Hit(damage:Number) {
-	this.changeHealth(-damage);
-}
-
 function knockback(xDistance:Number, yDistance:Number) {
 	x_next += xDistance;
 	y_next += yDistance;
@@ -114,13 +93,13 @@ this.onEnterFrame = function()
 	handleFireball();
 
 	move();
-	
+
 	animate();
 
 	updateResourceBar(this.vHealthBar, this.getHealthPercentage());
 
 	updateResourceBar(this.vManaBar, this.getManaPercentage());
-	
+
 	this.regenerate()
 
 	this.swapDepths(int(this._y));
@@ -136,10 +115,14 @@ function handleFireball() {
 function shootFireBallIfPossible() {
 	if ((vTimerkugel > vFireBallWaitFrames) and (this.getManaPoints() >= vFireBallManaCost)) {
 		// var a = b++ bedeutet var a = b; b += 1;
-		var nextFireBallNumber = _root.vNokugel++; 
-		duplicateMovieClip(vFireBallOriginal, vFireBallName + nextFireBallNumber, nextFireBallNumber);
+		var nextFireBallNumber = _root.vNokugel;
+		var nextName = vFireBallOriginal + nextFireBallNumber;
+		trace("NextFireballName: " + nextName)
+		_root.world.attachMovie(vFireBallOriginal,nextName , nextFireBallNumber, {number: nextFireBallNumber });
 		this.spendMana(vFireBallManaCost);
-		vTimerkugel = 0;	
+		vTimerkugel = 0;
+		_root.vNokugel++;
+
 	}
 }
 
@@ -172,7 +155,7 @@ function calculateNewSpeed() {
 	if (xSpeedMultiplier != 0 and ySpeedMultiplier != 0) {
 		ySpeedMultiplier /= Math.sqrt(2);
 		xSpeedMultiplier /= Math.sqrt(2);
-	} 
+	}
 	return {
 		x: xSpeedMultiplier * speed,
 		y: ySpeedMultiplier * speed
@@ -199,68 +182,40 @@ function moveCamera() {
 }
 
 function animate() {
-	if (_root.key_space == 1) {
-		this.vAction = "hit";
-		this.idle = 0;
+	var animationName;
+	if (this.vDead == "") {
+		if (_root.key_space == 1) {
+			this.vAction = "hit";
+			this.idle = 0;
+		} else {
+			this.idle = 1;
+		}
+		if (this.idle) {
+			this.vAction = "idle";
+		}
+		if (_root.key_left or _root.key_right or _root.key_up or _root.key_down) {
+			this.vAction = "walk";
+		}
+		if (this.vSword = true) {
+			this.vWeapon = "sword";
+		}
+		if (this.getHealthPoints() <= 0) {
+			this.vAction = "death";
+			speed = 0;
+			vDead = this.animationName();
+		}
+		animationName = this.animationName();
+	} else {
+		animationName = this.vDead;
 	}
-		else {
-		this.idle = 1;
-	}
-	if (this.idle) {
-		this.vAction = "idle";
-	}
-	if (_root.key_left or _root.key_right or _root.key_up or _root.key_down) {
-		this.vAction = "walk";
-	}
-	if (this.getHealthPoints() <= 0) {
-		this.vAction = "death";
-	}
-	if (this.vSword = true) {
-		this.vWeapon = "sword";
-	}
-	var animationName = this.vAction + "_" + this.vCurrentDirection + "_" + this.vWeapon;
 	animations.gotoAndStop(animationName);
 }
 
-function updateResourceBar(theBar:MovieClip, percent:Number) {
-	if (percent >= 0.999) {
-		theBar.gotoAndStop("hundert");
-	} else if (percent >= 0.9) {
-		theBar.gotoAndStop("neun");
-	} else if (percent >= 0.8) {
-		theBar.gotoAndStop("acht");
-	} else if (percent >= 0.7) {
-		theBar.gotoAndStop("sieben");
-	} else if (percent >= 0.6) {
-		theBar.gotoAndStop("sechs");
-	} else if (percent >= 0.5) {
-		theBar.gotoAndStop("fuenf");
-	} else if (percent >= 0.4) {
-		theBar.gotoAndStop("vier");
-	} else if (percent >= 0.3) {
-		theBar.gotoAndStop("drei");
-	} else if (percent >= 0.2) {
-		theBar.gotoAndStop("zwei");
-	} else if (percent >= 0.1) {
-		theBar.gotoAndStop("eins");
-	} else if (percent >= 0) {
-		theBar.gotoAndStop("null");
-	}
+function animationName() {
+	return  this.vAction + "_" + this.vCurrentDirection + "_" + this.vWeapon;
 }
 
 function regenerate() {
-	if (this.getManaPoints() < this.vMaxMana) {
-		this.changeMana(vManaRegeneration);
-		this.changeHealth(vHealthRegeneration);
-	}
-}
-
-// Helper Functions
-
-function changeMana(change) {
-	this.vManaPoints += change;
-}
-
-function changeHealth(change) {
-	this.vHealthPoints += change;	
+	this.regenerateMana();
+	this.regenerateHealth();
 }
