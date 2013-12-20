@@ -1,4 +1,0 @@
-﻿stop();
-
-this.blendMode = "alpha"
-

@@ -1,3 +1,0 @@
-FlashGame
-=========
-A Project.
