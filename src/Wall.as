@@ -28,13 +28,9 @@
 		}
 		
 		
-		private var tries = 0;
 		public function setUpInFrame(e:Event) {
-			this.tries++;
 			this.adjustToWalls();
-			if (this.tries > 2) {
-				removeEventListener(Event.ENTER_FRAME, setUpInFrame, false);
-			}
+			removeEventListener(Event.ENTER_FRAME, setUpInFrame, false);
 		}
 		
 		private function adjustToWalls() {
@@ -88,7 +84,7 @@
 			} else if (isRight && isLeft) {
 				this.gotoAndStop(HORIZONTAL_MIDDLE);
 				this.y = leftWall.y;
-				this.x = leftWall.x + (this.width - 3);
+				this.x = leftWall.x + (this.width - 5);
 			} else if (isBelow) {
 				this.gotoAndStop(BOTTOMEND);
 				this.x = aboveWall.x;
@@ -118,18 +114,18 @@
 		}
 		
 		private function isWallAbove(other:Wall) {
-			return Math.abs(other.x - this.x) < 10 && (other.y > this.y && Math.abs(other.y - this.y) < 150)
+			return Math.abs(other.x - this.x) < 10 && (other.y > this.y && Math.abs(other.y - this.y) < this.height)
 		}
 		
 		private function isWallBelow(other:Wall) {
-			return  Math.abs(other.x - this.x) < 10 && (other.y < this.y && Math.abs(other.y - this.y) < 150)
+			return  Math.abs(other.x - this.x) < 10 && (other.y < this.y && Math.abs(other.y - this.y) < this.height)
 		}
 		private function isWallRight(other:Wall) {
-			return Math.abs(other.y - this.y) < 10 && (other.x < this.x && Math.abs(other.x - this.x) < 250)
+			return Math.abs(other.y - this.y) < 10 && (other.x < this.x && Math.abs(other.x - this.x) < this.width)
 		}
 		
 		private function isWallLeft(other:Wall) {
-			return  Math.abs(other.y - this.y) < 10 && (other.x > this.x && Math.abs(other.x - this.x) < 250)
+			return  Math.abs(other.y - this.y) < 10 && (other.x > this.x && Math.abs(other.x - this.x) < this.width)
 		}
 	}
 	
