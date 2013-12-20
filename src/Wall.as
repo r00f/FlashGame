@@ -18,6 +18,8 @@
 		private const HORIZONTAL_MIDDLE:Number = 6;
 		private const HORIZONTAL_DOOR:Number = 7;
 		
+		private const HORIZONTAL_DOOR_NAME:String = "HorizontalDoor";
+		
 		
 		public function Wall() {
 			this.rootRef = root as Root;
@@ -105,9 +107,17 @@
 				this.x = rightWall.x - (this.width-3);
 			} else {
 				this.foundOther = false;
+				var random = ((int)(Math.random()*100))%7+1;
+				
 				trace("nothing near");
-				this.gotoAndStop(HORIZONTAL_DOOR);
+				this.gotoAndStop(random);
 			}	
+			
+			if (this.name == HORIZONTAL_DOOR_NAME) {
+				this.gotoAndStop(HORIZONTAL_DOOR);
+				this.y = leftWall.y;
+				this.x = leftWall.x + (this.width - 3);
+			}
 			
 		}
 		
