@@ -134,7 +134,8 @@
 			
 			if (this.name == HORIZONTAL_DOOR_NAME) {
 				this.gotoAndStop(HORIZONTAL_DOOR);
-				this.door.gotoAndStop(0);
+				var random = ((int)(Math.random()*100))%7 +1
+				this.door.gotoAndStop(random);
 			}
 			
 		}

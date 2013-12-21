@@ -48,12 +48,12 @@
 		
 		
 		private function collidesWithWall(x_next:Number, y_next:Number) {
-			
-			var wallHeightDoor:Number = 50;
-			var wallHeight:Number = 30;
-			var real_y_next = -20
+
 			for each (var wall:Wall in this.rootRef.walls)  {
 				if (wall.isDoor) {
+					if (wall.door == null) {
+						continue;
+					}
 					var door:MovieClip = wall.door;
 					if (door.hitbox1.hitTestPoint(x_next, y_next,false) ){
 						return true;
