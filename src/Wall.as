@@ -20,6 +20,8 @@
 		
 		private const HORIZONTAL_DOOR_NAME:String = "HorizontalDoor";
 		
+		public var isHorizontal:Boolean = false;
+		public var isVertical:Boolean = false;
 		
 		public function Wall() {
 			this.rootRef = root as Root;
@@ -36,6 +38,13 @@
 		
 		public function get isDoor():Boolean {
 			return this.name == HORIZONTAL_DOOR_NAME;
+		}
+		
+		public function get doorOpen():Boolean {
+			if (this.isDoor) {
+				return this.door.hitbox2 != null;
+			}
+			return false;
 		}
 		
 		
@@ -88,34 +97,44 @@
 				this.x = belowWall.x;
 				this.y = middle;
 				this.gotoAndStop(VERTICAL_MIDDLE);
+				this.isVertical = true;
 			} else if (isRight && isLeft) {
 				this.gotoAndStop(HORIZONTAL_MIDDLE);
 				this.y = leftWall.y;
 				this.x = leftWall.x + (this.width - 5);
+				
+				this.isHorizontal = true;
 			} else if (isBelow) {
 				this.gotoAndStop(BOTTOMEND);
 				this.x = aboveWall.x;
 				this.y = aboveWall.y + this.height;
+				this.isVertical = true;
 				
 			} else if (isAbove) {
 				this.gotoAndStop(TOPEND);
 				this.x = belowWall.x;
 				this.y = belowWall.y - this.height + 13;
+				
+				this.isVertical = true;
 			} else if (isRight) {
 				this.gotoAndStop(RIGHTEND);
 				this.y = leftWall.y;
 				this.x = leftWall.x + (this.width -3);
+				
+				this.isHorizontal = true;
 			} else if (isLeft) {
 				this.gotoAndStop(LEFTEND);
 				this.y = rightWall.y;
 				this.x = rightWall.x - (this.width-3);
-			} else {
-				var random = ((int)(Math.random()*100))%7+1;
-				this.gotoAndStop(random);
+				this.isHorizontal = true;
+			} else {				
+				this.isHorizontal = true;
+				this.gotoAndStop(1);
 			}	
 			
 			if (this.name == HORIZONTAL_DOOR_NAME) {
 				this.gotoAndStop(HORIZONTAL_DOOR);
+				this.door.gotoAndStop(0);
 			}
 			
 		}

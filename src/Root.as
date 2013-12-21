@@ -83,7 +83,7 @@
 			{
 				var offsetDoor:Number = 35;
 				var offsetElse:Number = 15;
-				if (wall.isDoor) {
+				if (wall.isDoor && wall.doorOpen) {
 					if (Math.abs(this.player.x - wall.x) < 25) {
 						if (shouldSwapWithPlayer(wall, offsetDoor)) {
 							swapChildren(wall, player);

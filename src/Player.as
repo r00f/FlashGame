@@ -54,19 +54,17 @@
 			var real_y_next = -20
 			for each (var wall:Wall in this.rootRef.walls)  {
 				if (wall.isDoor) {
-					if (Math.abs(x_next - wall.x) < 27 || Math.abs(x_next-wall.x) > 100) {
-					} else {
-						if (real_y_next < wall.y){
-							
-							if  (wall.y-real_y_next < wallHeightDoor) {
-								return true ;
-							}
-						}
+					var door:MovieClip = wall.door;
+					if (door.hitbox1.hitTestPoint(x_next, y_next,false) ){
+						return true;
 					}
-				} else if ( wall.hitTestPoint(x_next, y_next, false) && wall.y - y_next < wallHeight) {
-					trace("wall: " + wall.y + " next: "+ y_next)
+					if (door.hitbox2 != null && door.hitbox2.hitTestPoint(x_next, y_next,false)) {
+						return true;
+					}
+				} else if (wall.hitbox.hitTestPoint(x_next, y_next,false)) {
 					return true;
 				}
+					
 			}
 			return false;
 			
