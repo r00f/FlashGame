@@ -1,4 +1,4 @@
-package {
+package vendor {
 	
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
