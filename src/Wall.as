@@ -101,8 +101,7 @@
 			} else if (isRight && isLeft) {
 				this.gotoAndStop(HORIZONTAL_MIDDLE);
 				this.y = leftWall.y;
-				this.x = leftWall.x + (this.width - 5);
-				
+				this.x = leftWall.x + (this.width);
 				this.isHorizontal = true;
 			} else if (isBelow) {
 				this.gotoAndStop(BOTTOMEND);
@@ -119,15 +118,19 @@
 			} else if (isRight) {
 				this.gotoAndStop(RIGHTEND);
 				this.y = leftWall.y;
-				this.x = leftWall.x + (this.width -3);
+				var diff = (leftWall.isDoor) ? 4 : -5;
+				this.x = leftWall.x + (this.width + diff);
 				
 				this.isHorizontal = true;
 			} else if (isLeft) {
 				this.gotoAndStop(LEFTEND);
 				this.y = rightWall.y;
-				this.x = rightWall.x - (this.width-3);
+				
+				 diff = (rightWall.isDoor) ? -1 : -5;
+				this.x = rightWall.x - (this.width + diff);
 				this.isHorizontal = true;
 			} else {				
+				trace("nothing near");
 				this.isHorizontal = true;
 				this.gotoAndStop(1);
 			}	
@@ -135,6 +138,13 @@
 			if (this.name == HORIZONTAL_DOOR_NAME) {
 				this.gotoAndStop(HORIZONTAL_DOOR);
 				var random = ((int)(Math.random()*100))%7 +1
+				if (leftWall != null) {
+					this.y = leftWall.y;
+					this.x = leftWall.x + this.width - 6;
+				} else if (rightWall != null) {
+					this.y = rightWall.y;
+					this.x = rightWall.x - this.width;
+				}
 				this.door.gotoAndStop(random);
 			}
 			
@@ -152,7 +162,7 @@
 		}
 		
 		private function isWallLeft(other:Wall) {
-			return  Math.abs(other.y - this.y) < 10 && (other.x > this.x && Math.abs(other.x - this.x) < this.width)
+			return  Math.abs(other.y - this.y) < 10 && (other.x > this.x && Math.abs(other.x - this.x) < this.width+50)
 		}
 	}
 	
