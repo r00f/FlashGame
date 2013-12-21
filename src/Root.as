@@ -82,7 +82,7 @@
 			for each (var wall:Wall in this.walls) 
 			{
 				var offsetDoor:Number = 35;
-				var offsetElse:Number = 15;
+				var offsetElse:Number = 10;
 				if (wall.isDoor && wall.doorOpen) {
 					if (Math.abs(this.player.x - wall.x) < 25) {
 						if (shouldSwapWithPlayer(wall, offsetDoor)) {
