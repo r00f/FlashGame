@@ -47,21 +47,49 @@
 		}
 		
 		
+		private function collidesWithWall(x_next:Number, y_next:Number) {
+			for each (var wall:Wall in this.rootRef.walls)  {
+				if (wall.isDoor) {
+					if (Math.abs(x_next - wall.x) < 25) {
+						trace("within door region");
+					} else {
+						if ((y_next-20) < wall.y){
+							trace("wall: " + wall.y + " next: "+ y_next)
+							if  (wall.y-(y_next-20) < 50) {
+								trace("door < 50 below")
+								return true ;
+							}
+						}
+					}
+				} else if (wall.hitTestPoint(x_next, y_next, false) ) {
+					return true;
+				}
+			}
+			return false;
+			
+		}
 
 		
 		public function loop(e:Event):void {
 			
 			//this.parent.setChildIndex(this, this.y as int);
-			if(this.rootRef.leftPressed){
-				x -= speed;
-			} else if(this.rootRef.rightPressed){
-				x += speed;
-			}
-			
-			if(this.rootRef.upPressed){
-				y -= speed;
-			} else if(this.rootRef.downPressed){
-				y += speed;
+			var xchange = 0;
+			var ychange = 0;
+				if(this.rootRef.leftPressed){
+					xchange -= speed;
+				} else if(this.rootRef.rightPressed){
+					xchange += speed;
+				}
+				
+				if(this.rootRef.upPressed){
+					ychange -= speed;
+				} else if(this.rootRef.downPressed){
+					ychange += speed;
+				}
+				
+			if (!collidesWithWall(this.x + xchange, this.y + ychange)) {
+				this.x += xchange;
+				this.y += ychange;
 			}
 			
 			this.animations.gotoAndPlay(this.Action + "_" + this.Direction	+ "_sword");

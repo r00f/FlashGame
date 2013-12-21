@@ -31,8 +31,15 @@
 		public function setUpInFrame(e:Event) {
 			this.adjustToWalls();
 			removeEventListener(Event.ENTER_FRAME, setUpInFrame, false);
+			
 		}
 		
+		public function get isDoor():Boolean {
+			return this.name == HORIZONTAL_DOOR_NAME;
+		}
+		
+		
+
 		private function adjustToWalls() {
 			var isBelow:Boolean = false;
 			var isAbove:Boolean = false;
