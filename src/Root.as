@@ -81,15 +81,31 @@
 			
 			for each (var wall:Wall in this.walls) 
 			{
-				var playerWallOffset = 35;
-					if ((this.player.y -playerWallOffset) < wall.y && getChildIndex(this.player) > getChildIndex(wall) 
-						|| (this.player.y - playerWallOffset) > wall.y && getChildIndex(this.player) < getChildIndex(wall) ) 
-					{
-						swapChildren(wall,this.player);
+				var offsetDoor:Number = 35;
+				var offsetElse:Number = 15;
+				if (wall.isDoor) {
+					if (Math.abs(this.player.x - wall.x) < 25) {
+						if (shouldSwapWithPlayer(wall, offsetDoor)) {
+							swapChildren(wall, player);
+						}
+					} else {
+						if (shouldSwapWithPlayer(wall, offsetElse)) {
+							swapChildren(wall, player);
+						}
 					}
+				}else if (shouldSwapWithPlayer(wall, offsetElse)) {
+					swapChildren(wall, player);
+				}
+				
+					
 				
 			}
 			
+		}
+		
+		private function shouldSwapWithPlayer(wall:Wall, offset:Number):Boolean {
+			return (this.player.y -offset) < wall.y && getChildIndex(this.player) > getChildIndex(wall) 
+				|| (this.player.y - offset) > wall.y && getChildIndex(this.player) < getChildIndex(wall) 
 		}
 		
 		public function checkKeypresses():void
