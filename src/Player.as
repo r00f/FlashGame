@@ -45,30 +45,6 @@
 				return Actions.IDLE;
 			}
 		}
-		
-		
-		private function collidesWithWall(x_next:Number, y_next:Number) {
-
-			for each (var wall:Wall in this.rootRef.walls)  {
-				if (wall.isDoor) {
-					if (wall.door == null) {
-						continue;
-					}
-					var door:MovieClip = wall.door;
-					if (door.hitbox1.hitTestPoint(x_next, y_next,false) ){
-						return true;
-					}
-					if (door.hitbox2 != null && door.hitbox2.hitTestPoint(x_next, y_next,false)) {
-						return true;
-					}
-				} else if (wall.hitbox.hitTestPoint(x_next, y_next,false)) {
-					return true;
-				}
-					
-			}
-			return false;
-			
-		}
 
 		
 		public function loop(e:Event):void {
@@ -88,7 +64,7 @@
 					ychange += speed;
 				}
 				
-			if (!collidesWithWall(this.x + xchange, this.y + ychange)) {
+			if (!this.rootRef.collidesWithWall(this.x + xchange, this.y + ychange)) {
 				this.x += xchange;
 				this.y += ychange;
 			}

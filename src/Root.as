@@ -135,6 +135,33 @@
 				_downPressed = false;
 			}
 		}
+		
+		public function random(n:int) {
+			return ((int)(Math.random()*1000)) %n;
+		}
+		
+		public function collidesWithWall(x_next:Number, y_next:Number) {
+			
+			for each (var wall:Wall in this.walls)  {
+				if (wall.isDoor) {
+					if (wall.door == null) {
+						continue;
+					}
+					var door:MovieClip = wall.door;
+					if (door.hitbox1.hitTestPoint(x_next, y_next,false) ){
+						return true;
+					}
+					if (door.hitbox2 != null && door.hitbox2.hitTestPoint(x_next, y_next,false)) {
+						return true;
+					}
+				} else if (wall.hitbox.hitTestPoint(x_next, y_next,false)) {
+					return true;
+				}
+				
+			}
+			return false;
+			
+		}
 	}
 	
 	
