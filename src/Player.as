@@ -48,20 +48,23 @@
 		
 		
 		private function collidesWithWall(x_next:Number, y_next:Number) {
+			
+			var wallHeightDoor:Number = 50;
+			var wallHeight:Number = 30;
+			var real_y_next = -20
 			for each (var wall:Wall in this.rootRef.walls)  {
 				if (wall.isDoor) {
-					if (Math.abs(x_next - wall.x) < 25) {
-						trace("within door region");
+					if (Math.abs(x_next - wall.x) < 27 || Math.abs(x_next-wall.x) > 100) {
 					} else {
-						if ((y_next-20) < wall.y){
-							trace("wall: " + wall.y + " next: "+ y_next)
-							if  (wall.y-(y_next-20) < 50) {
-								trace("door < 50 below")
+						if (real_y_next < wall.y){
+							
+							if  (wall.y-real_y_next < wallHeightDoor) {
 								return true ;
 							}
 						}
 					}
-				} else if (wall.hitTestPoint(x_next, y_next, false) ) {
+				} else if ( wall.hitTestPoint(x_next, y_next, false) && wall.y - y_next < wallHeight) {
+					trace("wall: " + wall.y + " next: "+ y_next)
 					return true;
 				}
 			}
