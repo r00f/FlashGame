@@ -41,7 +41,9 @@
 		public function get Action():String {
 			if (this.rootRef.leftPressed || this.rootRef.upPressed || this.rootRef.rightPressed || this.rootRef.downPressed) {
 				return Actions.WALK;
-			} else {
+			} else if (this.rootRef.attackPressed) {
+				return Actions.HIT;
+			}else {
 				return Actions.IDLE;
 			}
 		}

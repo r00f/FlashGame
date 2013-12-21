@@ -16,7 +16,7 @@
 		private var _rightPressed:Boolean = false; //same, but for right key pressed
 		private var _upPressed:Boolean = false; //...up key pressed
 		private var _downPressed:Boolean = false; //...down key pressed
-		
+		private var _attackPressed:Boolean = false; //...down key pressed
 		
 		public var player:Player;
 		
@@ -53,6 +53,11 @@
 		public function get leftPressed():Boolean
 		{
 			return _leftPressed;
+		}
+		
+		public function get attackPressed():Boolean
+		{
+			return _attackPressed;
 		}
 
 		public function get walls():Array
@@ -111,28 +116,34 @@
 		public function checkKeypresses():void
 		{
 			// I used http://www.dakmm.com/?p=272 as a reference to get the keyCode numbers for each key
-			if(key.isDown(37) || key.isDown(65)){ // if left arrow or A is pressed
+			if(key.isDown(KeyCodes.LeftArrow) || key.isDown(KeyCodes.A)){ // if left arrow or A is pressed
 				_leftPressed = true;
 			} else {
 				_leftPressed = false;
 			}
 			
-			if(key.isDown(38) || key.isDown(87)){ // if up arrow or W is pressed
+			if(key.isDown(KeyCodes.UpArrow) || key.isDown(KeyCodes.w)){ // if up arrow or W is pressed
 				_upPressed = true;
 			} else {
 				_upPressed = false;
 			}
 			
-			if(key.isDown(39) || key.isDown(68)){ //if right arrow or D is pressed
+			if(key.isDown(KeyCodes.RightArrow) || key.isDown(KeyCodes.d)){ //if right arrow or D is pressed
 				_rightPressed = true;
 			} else {
 				_rightPressed = false;
 			}
 			
-			if(key.isDown(40) || key.isDown(83)){ //if down arrow or S is pressed
+			if(key.isDown(KeyCodes.DownArrow) || key.isDown(KeyCodes.s)){ //if down arrow or S is pressed
 				_downPressed = true;
 			} else {
 				_downPressed = false;
+			}
+			
+			if(key.isDown(KeyCodes.Spacebar)){ //if down arrow or S is pressed
+				_attackPressed = true;
+			} else {
+				_attackPressed = false;
 			}
 		}
 		
