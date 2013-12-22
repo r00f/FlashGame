@@ -8,6 +8,7 @@
 		
 		private var speed:Number = 5;
 		private var rootRef:Root;
+		public var animations:MovieClip;
 		
 		
 		private var _direction;
@@ -24,6 +25,7 @@
 			
 			if (this.rootRef.upPressed) {
 				_direction =  Directions.UP;
+				
 			}
 			if (this.rootRef.downPressed) {
 				_direction =  Directions.DOWN;

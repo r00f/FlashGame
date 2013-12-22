@@ -16,6 +16,9 @@
 		private var direction:String;
 		private var nextAction:String = "idle";
 		
+		
+		public var animations:MovieClip;
+		
 
 		
 		private var FixPositionX;

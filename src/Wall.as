@@ -20,6 +20,10 @@
 		
 		private const HORIZONTAL_DOOR_NAME:String = "HorizontalDoor";
 		
+		
+		public var hitbox:MovieClip;
+		public var door:MovieClip;
+		
 		public var isHorizontal:Boolean = false;
 		public var isVertical:Boolean = false;
 		
