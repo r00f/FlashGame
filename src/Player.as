@@ -73,7 +73,7 @@
 				this.y += ychange;
 			}
 			
-			this.animations.gotoAndPlay(this.Action + "_" + this.Direction	+ "_sword");
+			this.animations.gotoAndPlay(this.Action + "_" + this.Direction);
 			
 		}
 
